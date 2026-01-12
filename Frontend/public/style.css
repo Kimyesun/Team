@@ -127,24 +127,25 @@ body {
     margin-bottom: 20px;
     letter-spacing: -1px;
     
-    overflow: hidden;
-    border-right: .1em solid rgb(0, 0, 0); 
+    /* Cursor Effect */
+    border-right: .1em solid orange; 
     white-space: nowrap; 
     margin: 0 auto 20px auto; 
+    width: fit-content;
     
-    /* Initially hidden, will be triggered by JS */
-    width: 0; 
+    animation: blink-caret .75s step-end infinite;
+    
+    /* Hidden initially */
+    visibility: hidden;
 }
 
-.challenge h2.active {
-    animation: 
-      typing 3.5s steps(22, end) forwards,
-      blink-caret .75s step-end infinite;
+.challenge h2.typing-started {
+    visibility: visible;
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange; } 
 }
 
 @keyframes blink-caret {
