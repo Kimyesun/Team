@@ -91,13 +91,13 @@ body {
     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
-.challenge {
+.challenge-quicklink {
     width: 100%;
     background-color: #176B5F;
     padding: 15px 15px;
 }
 
-.challenge_inner {
+.challenge-quicklink-inner {
     background-color: #fff;
     border-top: 10px solid #A2DCD3; 
     border-bottom: 10px solid #A2DCD3;
@@ -109,7 +109,7 @@ body {
     text-align: center;
 }
 
-.challenge .stufit_logo {
+.challenge-quicklink .stufit-logo {
     font-size: 20px;
     font-weight: 700;
     font-family: serif;
@@ -119,7 +119,7 @@ body {
     text-transform: uppercase;
 }
 
-.challenge h2 {
+.challenge-quicklink h2 {
     font-family: 'Instrument Sans', sans-serif;
     font-size: 56px;
     font-weight: 700;
@@ -128,7 +128,7 @@ body {
     letter-spacing: -1px;
     
     /* Cursor Effect */
-    border-right: .1em solid orange; 
+    border-right: .1em solid #000; 
     white-space: nowrap; 
     margin: 0 auto 20px auto; 
     width: fit-content;
@@ -139,28 +139,23 @@ body {
     visibility: hidden;
 }
 
-.challenge h2.typing-started {
+.challenge-quicklink h2.typing-started {
     visibility: visible;
 }
 
 @keyframes blink-caret {
   from, to { border-color: transparent }
-  50% { border-color: orange; } 
+  50% { border-color: #000; } 
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: rgb(0, 0, 0); }
-}
-
-.challenge p {
+.challenge-quicklink p {
     font-size: 18px;
     color: #333;
     margin-bottom: 40px;
     font-weight: 500;
 }
 
-.challenge button {
+.challenge-quicklink button {
     background-color: #126A5E;
     color: #fff;
     border: none;
@@ -173,7 +168,121 @@ body {
     transition: all 0.3s ease;
 }
 
-.challenge button:hover {
+.challenge-quicklink button:hover {
     background-color: #0e5249;
     box-shadow: 0 6px 8px rgba(0,0,0,0.25);
+}
+/* Ranking Section */
+.ranking-quicklink {
+    width: 100%;
+    padding: 80px 40px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ranking-quicklink-title {
+    font-size: 64px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 50px;
+    line-height: 1.2;
+    color: #000;
+    font-family: 'Instrument Sans', sans-serif;
+}
+
+.ranking-quicklink-container {
+    width: 100%;
+    max-width: 1600px; /* Wider container */
+    background-color: #92D4C8; 
+    border-radius: 30px;
+    padding: 60px 40px; 
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.ranking-quicklink-arrow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.ranking-quicklink-list {
+    flex: 1;
+    max-width: 450px; /* Limit card width */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.rank-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    height: 70px;
+}
+
+.rank-num {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    width: 30px;
+}
+
+.rank-profile {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.profile-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 15px;
+    position: relative;
+    background-image: url('img/Profile.png');
+    background-size: cover;
+    background-position: center;
+}
+
+
+.rank-profile .name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.rank-score {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.rank-score .label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 2px;
+}
+
+.rank-score .value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #176B5F; /* Teal color for score */
 }
