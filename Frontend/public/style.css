@@ -131,10 +131,15 @@ body {
     border-right: .1em solid rgb(0, 0, 0); 
     white-space: nowrap; 
     margin: 0 auto 20px auto; 
+    
+    /* Initially hidden, will be triggered by JS */
+    width: 0; 
+}
+
+.challenge h2.active {
     animation: 
-      typing 5s steps(40, end),
-      blink-caret .50 step-end 4 forwards;
-    width: fit-content;
+      typing 3.5s steps(22, end) forwards,
+      blink-caret .75s step-end infinite;
 }
 
 @keyframes typing {
@@ -144,7 +149,7 @@ body {
 
 @keyframes blink-caret {
   from, to { border-color: transparent }
-  5% { border-color: rgb(0, 0, 0); }
+  50% { border-color: rgb(0, 0, 0); }
 }
 
 .challenge p {
