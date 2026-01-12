@@ -28,10 +28,15 @@ body {
 }
 
 .header .logo {
-    font-size: 24px;
-    font-weight: 700;
-    color: #00664F; /* Dark green tone from image */
+    display: flex;
+    align-items: center;
     cursor: pointer;
+}
+
+.header .logo img {
+    height: 40px; /* Adjust height based on header height */
+    width: auto;
+}
 }
 
 .header .nav {
