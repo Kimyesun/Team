@@ -704,3 +704,534 @@ body {
 .social-icon:hover {
     opacity: 0.8;
 }
+
+/* Challenge Modal Styles */
+.modal {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 80px); /* Subtract header height */
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top */
+    background-color: #EEE; /* Background strictly for this section */
+    overflow-y: auto; /* Enable scrolling */
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    padding: 40px;
+    /* Removed background-color and box-shadow to blend with modal background */
+}
+
+.modal-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.header-left h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 5px 15px;
+    border: 1px solid #ddd;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    padding: 5px;
+    width: 200px;
+}
+
+.search-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: #555;
+    color: white;
+    border-radius: 5px;
+    width: 24px;
+    height: 24px;
+}
+.search-icon svg {
+    width: 16px; 
+    height: 16px;
+}
+
+.create-challenge-btn {
+    background-color: #fff;
+    border: 1px solid #176B5F;
+    color: #176B5F;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.create-challenge-btn:hover {
+    background-color: #176B5F;
+    color: #fff;
+}
+
+.challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.challenge-card {
+    background-color: #fff;
+    border: 2px solid #57C5B6;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.challenge-card .card-top {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.challenge-card .card-top h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+}
+
+.challenge-card .card-top .status {
+    font-size: 14px;
+    color: #666;
+}
+
+.challenge-card .card-info p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.challenge-card .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.challenge-card .edit-btn {
+    text-decoration: none;
+    color: #777;
+    font-size: 14px;
+}
+
+.challenge-card .detail-btn {
+    background-color: #fff;
+    border: 2px solid #176B5F;
+    color: #176B5F;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.challenge-card .detail-btn:hover {
+    background-color: #176B5F;
+    color: white;
+}
+
+.ongoing-challenge-link {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.ongoing-challenge-link a {
+    text-decoration: none;
+    color: #888;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.ongoing-challenge-link a:hover {
+    text-decoration: underline;
+}
+
+/* Challenge Detail View Styles */
+#challenge-detail-view {
+    background-color: #fff;
+    align-items: stretch; /* Stretch to fill height */
+    padding: 0;
+    overflow: hidden; /* Handle inner scrolling */
+}
+
+#challenge-detail-view .detail-view-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    max-width: none; /* Override modal-content max-width */
+}
+
+.detail-sidebar {
+    width: 250px;
+    background-color: #ECECEC;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    /* Fancy border radius for the "page" look if needed, but simple block for now */
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.detail-sidebar h2 {
+    font-family: serif; /* As per screenshot */
+    font-size: 24px;
+    margin-bottom: 40px;
+    color: #333;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.member-list {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.member-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.detail-main {
+    flex: 1;
+    padding: 50px 80px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.detail-card {
+    background-color: #F2F2F2; /* Light gray cards */
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.detail-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Progress Section */
+.progress-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.progress-info .percentage {
+    font-size: 32px;
+    font-weight: 500;
+    color: #000;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 15px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #176B5F; /* Teal */
+    border-radius: 10px;
+}
+
+/* Goal Section */
+.goal-box {
+    background-color: #E0E0E0;
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 18px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #176B5F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.submit-btn:hover {
+    background-color: #13554B;
+}
+
+/* Status Section */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 20px;
+    column-gap: 40px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.status-label {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.status-label.success { color: #176B5F; }
+.status-label.danger { color: #D32F2F; }
+.status-label.warning { color: #FBC02D; }
+
+/* Actions */
+.detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.detail-actions button {
+    padding: 10px 30px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-giveup {
+    background-color: #E0E0E0;
+    color: #555;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-complete {
+    background-color: #E0E0E0;
+    color: #333;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-complete:hover, .btn-giveup:hover {
+    background-color: #D5D5D5;
+}
+
+
+.detail-main {
+    position: relative; /* Context for absolute positioning of close button if needed, though flex works too */
+}
+
+.close-detail-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #555;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-detail-btn:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+/* Popup Modal Styles */
+.popup-modal {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 80px);
+    z-index: 2000; /* Higher than other modals */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-modal.hidden {
+    display: none;
+}
+
+.popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+}
+
+.popup-content {
+    position: relative;
+    background-color: #fff;
+    border-radius: 50px;
+    padding: 50px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 2001;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+}
+
+.form-group input {
+    padding: 12px 15px;
+    border: 1px solid #096B68;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    color: #333;
+}
+
+.form-group input::placeholder {
+    color: #aaa;
+}
+
+.start-challenge-btn {
+    margin-top: 10px;
+    background-color: #176B5F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.start-challenge-btn:hover {
+    background-color: #13554B;
+}

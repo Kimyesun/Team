@@ -14,7 +14,7 @@
             </div>
             <div class="nav">
                 <a href="#">출석체크</a>
-                <a href="#">챌린지</a>
+                <a href="#" id="challenge-link">챌린지</a>
                 <a href="#">랭킹</a>
                 <a href="#">커뮤니티</a>
                 <a href="#">상점</a>
@@ -340,6 +340,345 @@
             </div>
         </div>
     </div>
+    <!-- Challenge Modal -->
+    <div id="challenge-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="ongoing-challenge-link">
+                <a href="#" id="go-to-ongoing-challenges">진행중인 챌린지 보러가기 →</a>
+            </div>
+            <div class="modal-header-top">
+                <div class="header-left">
+                    <h2>전체 챌린지</h2>
+                    <div class="search-bar">
+                        <input type="text" id="all-challenge-code-input" placeholder="Enter code">
+                        <button class="search-icon" id="all-challenge-code-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="create-challenge-btn">챌린지 만들기</button>
+                </div>
+            </div>
+            
+            <div class="challenge-grid">
+                <!-- Card 1 -->
+                <div class="challenge-card">
+                    <div class="card-top">
+                        <h3>일상 챌린지</h3>
+                        <span class="status">(진행 중)</span>
+                    </div>
+                    <div class="card-info">
+                        <p>참여 인원 - 현재 두명 참여중</p>
+                        <p>기간 - 2025.10.3 ~ 2025.10.9</p>
+                        <p>목표 - 아침 6시 기상</p>
+                    </div>
+                    <div class="card-bottom">
+                        <a href="#" class="edit-btn">수정하기→</a>
+                        <button class="detail-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="challenge-card">
+                    <div class="card-top">
+                        <h3>일상 챌린지</h3>
+                        <span class="status">(진행 중)</span>
+                    </div>
+                    <div class="card-info">
+                        <p>참여 인원 - 현재 열명 참여중</p>
+                        <p>기간 - 2025.10.3 ~ 2025.10.9</p>
+                        <p>목표 - 매일 물 한잔 마시기</p>
+                    </div>
+                    <div class="card-bottom">
+                        <a href="#" class="edit-btn">수정하기→</a>
+                        <button class="detail-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="challenge-card">
+                    <div class="card-top">
+                        <h3>운동 챌린지</h3>
+                        <span class="status">(진행 중)</span>
+                    </div>
+                    <div class="card-info">
+                        <p>참여 인원 - 현재 세명 참여중</p>
+                        <p>기간 - 2025.10.3 ~ 2025.10.9</p>
+                        <p>목표 - 하루 1시간씩 걷기</p>
+                    </div>
+                    <div class="card-bottom">
+                        <a href="#" class="edit-btn">수정하기→</a>
+                        <button class="detail-btn">자세히 보기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ongoing Challenge Modal -->
+    <div id="ongoing-challenge-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="ongoing-challenge-link">
+                <a href="#" id="back-to-all-challenges">챌린지 전체보기 →</a>
+            </div>
+            <div class="modal-header-top">
+                <div class="header-left">
+                    <h2>진행중인 챌린지</h2>
+                    <div class="search-bar">
+                        <input type="text" id="ongoing-challenge-code-input" placeholder="Enter code">
+                        <button class="search-icon" id="ongoing-challenge-code-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="create-challenge-btn">챌린지 만들기</button>
+                </div>
+            </div>
+            
+            <div class="challenge-grid">
+                <!-- Card 1 -->
+                <div class="challenge-card">
+                    <div class="card-top">
+                        <h3>일상 챌린지</h3>
+                        <span class="status">(진행 중)</span>
+                    </div>
+                    <div class="card-info">
+                        <p>참여 인원 - 현재 두명 참여중</p>
+                        <p>기간 - 2025.10.3 ~ 2025.10.9</p>
+                        <p>목표 - 아침 6시 기상</p>
+                    </div>
+                    <div class="card-bottom">
+                        <a href="#" class="edit-btn">수정하기→</a>
+                        <button class="detail-btn">자세히 보기</button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="challenge-card">
+                    <div class="card-top">
+                        <h3>기말고사챌린지</h3>
+                        <span class="status">(진행 중)</span>
+                    </div>
+                    <div class="card-info">
+                        <p>참여 인원 - 현재 두명 참여중</p>
+                        <p>기간 - 2025.10.3 ~ 2025.10.9</p>
+                        <p>목표 - 하루 1시간 공부</p>
+                    </div>
+                    <div class="card-bottom">
+                        <a href="#" class="edit-btn">수정하기→</a>
+                        <button class="detail-btn">자세히 보기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Challenge Detail View -->
+    <div id="challenge-detail-view" class="modal hidden">
+        <div class="detail-view-container">
+            <!-- Sidebar -->
+            <div class="detail-sidebar">
+                <h2>MEMBER</h2>
+                <div class="member-list">
+                    <div class="member-item">
+                        <div class="member-avatar">
+                            <img src="img/Profile.png" alt="Profile">
+                        </div>
+                        <span class="member-name">김예선</span>
+                    </div>
+                    <div class="member-item">
+                        <div class="member-avatar">
+                            <img src="img/Profile.png" alt="Profile">
+                        </div>
+                        <span class="member-name">유태민</span>
+                    </div>
+                    <div class="member-item">
+                        <div class="member-avatar">
+                            <img src="img/Profile.png" alt="Profile">
+                        </div>
+                        <span class="member-name">이정민</span>
+                    </div>
+                    <div class="member-item">
+                        <div class="member-avatar">
+                            <img src="img/Profile.png" alt="Profile">
+                        </div>
+                        <span class="member-name">박현서</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="detail-main">
+                <button class="close-detail-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <!-- Progress Section -->
+                <div class="detail-card">
+                    <h3>챌린지 진행도</h3>
+                    <div class="progress-area">
+                        <div class="progress-info">
+                            <span class="days-elapsed">0일 경과</span>
+                            <span class="percentage">50%</span>
+                            <span class="days-left">30일 남음</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goal Section -->
+                <div class="detail-card">
+                    <h3>챌린지 목표</h3>
+                    <div class="goal-box">아침 6시 기상</div>
+                    <button class="submit-btn">제출하기</button>
+                </div>
+
+                <!-- Status Section -->
+                <div class="detail-card status-card">
+                    <h3>참여 현황</h3>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <div class="status-user">
+                                <div class="status-avatar">
+                                    <img src="img/Profile.png" alt="Profile">
+                                </div>
+                                <span>김예선</span>
+                            </div>
+                            <span class="status-label success">인증 완료</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-user">
+                                <div class="status-avatar">
+                                    <img src="img/Profile.png" alt="Profile">
+                                </div>
+                                <span>이정민</span>
+                            </div>
+                            <span class="status-label danger">미제출</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-user">
+                                <div class="status-avatar">
+                                    <img src="img/Profile.png" alt="Profile">
+                                </div>
+                                <span>이정민</span>
+                            </div>
+                            <span class="status-label danger">미제출</span>
+                        </div>
+                        
+                        <div class="status-item">
+                            <div class="status-user">
+                                <div class="status-avatar">
+                                    <img src="img/Profile.png" alt="Profile">
+                                </div>
+                                <span>유태민</span>
+                            </div>
+                            <span class="status-label success">인증 완료</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-user">
+                                <div class="status-avatar">
+                                    <img src="img/Profile.png" alt="Profile">
+                                </div>
+                                <span>박현서</span>
+                            </div>
+                            <span class="status-label warning">인증 실패</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-user">
+                                <div class="status-avatar">
+                                    <img src="img/Profile.png" alt="Profile">
+                                </div>
+                                <span>박현서</span>
+                            </div>
+                            <span class="status-label warning">인증 실패</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-actions">
+                    <button class="btn-giveup">give up</button>
+                    <button class="btn-complete">complete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Challenge Modal -->
+    <div id="create-challenge-modal" class="popup-modal hidden">
+        <div class="popup-overlay"></div>
+        <div class="popup-content">
+            <div class="form-group">
+                <label>챌린지 이름</label>
+                <input type="text" id="new-challenge-name" placeholder="예: 기말고사 성적내기">
+            </div>
+            <div class="form-group">
+                <label>내 이름</label>
+                <input type="text" id="new-challenge-user" placeholder="예: 김예선">
+            </div>
+            <div class="form-group">
+                <label>기간 (일)</label>
+                <input type="number" id="new-challenge-duration" placeholder="30">
+            </div>
+            <div class="form-group">
+                <label>목표</label>
+                <input type="text" id="new-challenge-goal" placeholder="예: 아침 6시 기상">
+            </div>
+            <div class="form-group">
+                <label>코드 입력 (선택)</label>
+                <input type="text" id="new-challenge-code" placeholder="예: KIM">
+            </div>
+            <button class="start-challenge-btn">챌린지 시작하기</button>
+        </div>
+    </div>
+
+    <!-- Edit Challenge Modal -->
+    <div id="edit-challenge-modal" class="popup-modal hidden">
+        <div class="popup-overlay"></div>
+        <div class="popup-content">
+            <div class="form-group">
+                <label>챌린지 이름</label>
+                <input type="text" id="edit-challenge-name" placeholder="예: 기말고사 성적내기">
+            </div>
+            <div class="form-group">
+                <label>내 이름</label>
+                <input type="text" id="edit-challenge-user" placeholder="예: 김예선">
+            </div>
+            <div class="form-group">
+                <label>기간 (일)</label>
+                <input type="number" id="edit-challenge-duration" placeholder="30">
+            </div>
+            <div class="form-group">
+                <label>목표</label>
+                <input type="text" id="edit-challenge-goal" placeholder="예: 아침 6시 기상">
+            </div>
+            <div class="form-group">
+                <label>코드 입력 (선택)</label>
+                <input type="text" id="edit-challenge-code" placeholder="예: KIM">
+            </div>
+            <button class="update-challenge-btn start-challenge-btn">수정 완료하기</button>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="custom-alert-modal" class="popup-modal hidden">
+        <div class="popup-overlay"></div>
+        <div class="popup-content" style="width: 400px; text-align: center; padding: 40px;">
+            <p id="custom-alert-text" style="margin-bottom: 25px; font-size: 1.1rem; color: #333; line-height: 1.5; font-weight: 500;"></p>
+            <button id="custom-alert-close" class="start-challenge-btn" style="width: 120px; margin: 0 auto; padding: 12px;">확인</button>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
