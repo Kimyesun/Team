@@ -1184,7 +1184,6 @@ body {
 .popup-content {
     position: relative;
     background-color: #fff;
-    border-radius: 50px;
     padding: 50px;
     width: 500px;
     display: flex;
@@ -1192,6 +1191,7 @@ body {
     gap: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     z-index: 2001;
+    border-radius: 30px;
 }
 
 .form-group {
@@ -1234,4 +1234,73 @@ body {
 
 .start-challenge-btn:hover {
     background-color: #13554B;
+}
+
+/* Confirm Modal Styles */
+.confirm-modal-content {
+    padding: 0 !important;
+    width: 400px !important;
+    overflow: hidden;
+    gap: 0 !important;
+    border-radius: 0 !important;
+}
+
+.confirm-text-area {
+    padding: 50px 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.confirm-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.confirm-subtitle {
+    font-size: 1rem;
+    color: #096B68;
+    font-weight: 600;
+    margin: 5px 0 0;
+}
+
+.confirm-desc {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 5px 0 0;
+}
+
+.confirm-buttons {
+    display: flex;
+    width: 100%;
+    height: 60px;
+}
+
+.confirm-btn {
+    flex: 1;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    background: #096B68;
+}
+
+.confirm-btn.cancel {
+    background-color: #B0B0B0;
+}
+
+.confirm-btn.cancel:hover {
+    background-color: #999;
+}
+
+.confirm-btn.giveup {
+    background-color: #0F5E56;
+}
+
+.confirm-btn.giveup:hover {
+    background-color: #0A453F;
 }

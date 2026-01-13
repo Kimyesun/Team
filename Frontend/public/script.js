@@ -205,6 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (goalBox) goalBox.textContent = goal;
     }
 
+    // Track current challenge being viewed in detail logic
+    let currentDetailCard = null;
+    let currentDetailChallengeData = null;
+
     if (detailButtons.length > 0 && detailView) {
         detailButtons.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -223,6 +227,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Update Goal Text based on clicked card
                 const card = btn.closest('.challenge-card');
+                currentDetailCard = card; // Set current card
+                currentDetailChallengeData = null; // Static card
+
                 if (card) {
                     const infos = card.querySelectorAll('.card-info p');
                     let goalText = '';
@@ -483,6 +490,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 ongoingModal.classList.add('hidden');
             }
             
+            // Set current detail context
+            currentDetailCard = newCard;
+            currentDetailChallengeData = challengeData;
+
             updateDetailView(userName, duration, goal);
 
             if (detailView) detailView.classList.remove('hidden');
@@ -609,6 +620,112 @@ document.addEventListener('DOMContentLoaded', () => {
     if (ongoingCodeInput) {
         ongoingCodeInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') joinChallengeByCode('#ongoing-challenge-code-input');
+        });
+    }
+
+    // Give Up Modal Interaction
+    const giveUpBtn = document.querySelector('.btn-giveup');
+    const giveUpModal = document.getElementById('give-up-modal');
+    const giveUpCancelBtn = giveUpModal ? giveUpModal.querySelector('.cancel') : null;
+    const giveUpConfirmBtn = giveUpModal ? giveUpModal.querySelector('.giveup') : null;
+    const giveUpOverlay = giveUpModal ? giveUpModal.querySelector('.popup-overlay') : null;
+
+    // Final Give Up Modal Variables
+    const finalGiveUpModal = document.getElementById('final-give-up-modal');
+    const finalGiveUpCancelBtn = finalGiveUpModal ? finalGiveUpModal.querySelector('.cancel') : null;
+    const finalGiveUpConfirmBtn = finalGiveUpModal ? finalGiveUpModal.querySelector('.real-giveup') : null;
+    const finalGiveUpOverlay = finalGiveUpModal ? finalGiveUpModal.querySelector('.popup-overlay') : null;
+
+    if (finalGiveUpCancelBtn) {
+        finalGiveUpCancelBtn.addEventListener('click', () => {
+             finalGiveUpModal.classList.add('hidden');
+        });
+    }
+
+    if (finalGiveUpOverlay) {
+        finalGiveUpOverlay.addEventListener('click', () => {
+             finalGiveUpModal.classList.add('hidden');
+        });
+    }
+
+    if (finalGiveUpConfirmBtn) {
+        finalGiveUpConfirmBtn.addEventListener('click', () => {
+             finalGiveUpModal.classList.add('hidden');
+             // Close Detail View as well
+             if (detailView) detailView.classList.add('hidden');
+             
+             // Get info to identify card across modals
+             let cardName = '';
+             if (currentDetailCard) {
+                 const h3 = currentDetailCard.querySelector('h3');
+                 if (h3) cardName = h3.textContent.trim();
+                 currentDetailCard.remove(); // Remove the clicked card DOM
+             }
+
+             // Remove from storage if dynamic
+             if (currentDetailChallengeData) {
+                 createdChallenges = createdChallenges.filter(c => c !== currentDetailChallengeData);
+                 saveChallenges();
+             } else if (cardName) {
+                 // Fallback: Remove by Name matching (for cases where ref might be lost or static mixed)
+                 const beforeCount = createdChallenges.length;
+                 createdChallenges = createdChallenges.filter(c => c.name !== cardName);
+                 if (createdChallenges.length !== beforeCount) saveChallenges();
+             }
+             
+             // Also remove from Ongoing Modal if we weren't there
+             if (ongoingModal && cardName) {
+                 // Remove any card with same name in Ongoing
+                 const ongoingCards = ongoingModal.querySelectorAll('.challenge-card');
+                 ongoingCards.forEach(card => {
+                     const h3 = card.querySelector('h3');
+                     if (h3 && h3.textContent.trim() === cardName) {
+                         card.remove();
+                     }
+                 });
+             }
+             
+             // Also remove from All Challenges Modal just in case
+             if (challengeModal && cardName) {
+                 const allCards = challengeModal.querySelectorAll('.challenge-card');
+                 allCards.forEach(card => {
+                     const h3 = card.querySelector('h3');
+                     if (h3 && h3.textContent.trim() === cardName) {
+                         card.remove();
+                     }
+                 });
+             }
+
+             // Navigate to Ongoing Challenges to show state
+             if (challengeModal) challengeModal.classList.add('hidden');
+             if (ongoingModal) ongoingModal.classList.remove('hidden');
+             
+             showAlert('챌린지를 삭제했습니다.');
+        });
+    }
+
+    if (giveUpBtn && giveUpModal) {
+        giveUpBtn.addEventListener('click', () => {
+             giveUpModal.classList.remove('hidden');
+        });
+    }
+
+    if (giveUpCancelBtn) {
+        giveUpCancelBtn.addEventListener('click', () => {
+             giveUpModal.classList.add('hidden');
+        });
+    }
+
+    if (giveUpOverlay) {
+        giveUpOverlay.addEventListener('click', () => {
+             giveUpModal.classList.add('hidden');
+        });
+    }
+
+    if (giveUpConfirmBtn) {
+        giveUpConfirmBtn.addEventListener('click', () => {
+             giveUpModal.classList.add('hidden');
+             if (finalGiveUpModal) finalGiveUpModal.classList.remove('hidden');
         });
     }
 });
