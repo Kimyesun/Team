@@ -17,7 +17,7 @@ body {
     position: relative;
 }
 
-/* Header */
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -127,7 +127,7 @@ body {
     margin-bottom: 20px;
     letter-spacing: -1px;
     
-    /* Cursor Effect */
+    
     border-right: .1em solid #000; 
     white-space: nowrap; 
     margin: 0 auto 20px auto; 
@@ -135,7 +135,7 @@ body {
     
     animation: blink-caret .75s step-end infinite;
     
-    /* Hidden initially */
+    
     visibility: hidden;
 }
 
@@ -172,7 +172,7 @@ body {
     background-color: #0e5249;
     box-shadow: 0 6px 8px rgba(0,0,0,0.25);
 }
-/* Ranking Section */
+
 .ranking-quicklink {
     width: 100%;
     padding: 80px 40px;
@@ -194,7 +194,7 @@ body {
 
 .ranking-quicklink-container {
     width: 100%;
-    max-width: 1600px; /* Wider container */
+    max-width: 1600px; 
     background-color: #92D4C8; 
     border-radius: 30px;
     padding: 60px 40px; 
@@ -221,7 +221,7 @@ body {
 
 .ranking-quicklink-list {
     flex: 1;
-    max-width: 450px; /* Limit card width */
+    max-width: 450px; 
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -284,10 +284,10 @@ body {
 .rank-score .value {
     font-size: 16px;
     font-weight: 700;
-    color: #176B5F; /* Teal color for score */
+    color: #176B5F; 
 }
 
-/* Shop Section */
+
 .shop-quicklink {
     padding: 100px 0;
     text-align: center;
@@ -336,7 +336,7 @@ body {
     align-items: center;
     margin-bottom: 40px;
     position: relative;
-    height: 300px; /* Force height for alignment */
+    height: 300px; 
 }
 
 .shop-nav {
@@ -374,7 +374,7 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-/* Item Sizes */
+
 .shop-item.small {
     width: 100px;
     height: 100px;
@@ -396,10 +396,10 @@ body {
     transform: scale(1.1);
 }
 
-/* Rudolph Specifics */
+
 .rudolph-frame {
     background-color: #fff;
-    border: 6px dashed #4caf50; /* Green dashed border like image */
+    border: 6px dashed #4caf50; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     position: relative;
     display: flex;
@@ -407,7 +407,7 @@ body {
     align-items: center;
 }
 
-/* Make it look like the image's antlers are there */
+
 .rudolph-frame::before {
     font-size: 80px;
 }
@@ -415,12 +415,12 @@ body {
 .active-indicator-dot {
     width: 8px;
     height: 8px;
-    background-color: #7c4dff; /* Purple dot */
+    background-color: #7c4dff; 
     position: absolute;
     bottom: 20px;
     left: -10px;
     border-radius: 50%;
-    display: none; /* Hide for now, specific detail */
+    display: none; 
 }
 
 .shop-item-info {
@@ -705,19 +705,19 @@ body {
     opacity: 0.8;
 }
 
-/* Challenge Modal Styles */
+
 .modal {
     position: fixed;
     top: 80px;
     left: 0;
     width: 100%;
-    height: calc(100% - 80px); /* Subtract header height */
+    height: calc(100% - 80px); 
     z-index: 1000;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align to top */
-    background-color: #EEE; /* Background strictly for this section */
-    overflow-y: auto; /* Enable scrolling */
+    align-items: flex-start; 
+    background-color: #EEE; 
+    overflow-y: auto; 
 }
 
 .modal.hidden {
@@ -729,7 +729,7 @@ body {
     width: 90%;
     max-width: 1200px;
     padding: 40px;
-    /* Removed background-color and box-shadow to blend with modal background */
+    
 }
 
 .modal-header-top {
@@ -808,6 +808,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 30px;
+    padding: 5px;
 }
 
 .challenge-card {
@@ -892,19 +893,19 @@ body {
     text-decoration: underline;
 }
 
-/* Challenge Detail View Styles */
+
 #challenge-detail-view {
     background-color: #fff;
-    align-items: stretch; /* Stretch to fill height */
+    align-items: stretch; 
     padding: 0;
-    overflow: hidden; /* Handle inner scrolling */
+    overflow: hidden; 
 }
 
 #challenge-detail-view .detail-view-container {
     display: flex;
     width: 100%;
     height: 100%;
-    max-width: none; /* Override modal-content max-width */
+    max-width: none; 
 }
 
 .detail-sidebar {
@@ -913,7 +914,7 @@ body {
     padding: 40px 20px;
     display: flex;
     flex-direction: column;
-    /* Fancy border radius for the "page" look if needed, but simple block for now */
+    
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
     box-shadow: 4px 0 10px rgba(0,0,0,0.05);
@@ -921,7 +922,7 @@ body {
 }
 
 .detail-sidebar h2 {
-    font-family: serif; /* As per screenshot */
+    font-family: serif; 
     font-size: 24px;
     margin-bottom: 40px;
     color: #333;
@@ -973,7 +974,7 @@ body {
 }
 
 .detail-card {
-    background-color: #F2F2F2; /* Light gray cards */
+    background-color: #F2F2F2; 
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
@@ -986,7 +987,7 @@ body {
     color: #333;
 }
 
-/* Progress Section */
+
 .progress-area {
     display: flex;
     flex-direction: column;
@@ -1017,11 +1018,11 @@ body {
 
 .progress-bar-fill {
     height: 100%;
-    background-color: #176B5F; /* Teal */
+    background-color: #176B5F; 
     border-radius: 10px;
 }
 
-/* Goal Section */
+
 .goal-box {
     background-color: #E0E0E0;
     padding: 15px;
@@ -1050,7 +1051,7 @@ body {
     background-color: #13554B;
 }
 
-/* Status Section */
+
 .status-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1095,7 +1096,7 @@ body {
 .status-label.danger { color: #D32F2F; }
 .status-label.warning { color: #FBC02D; }
 
-/* Actions */
+
 .detail-actions {
     display: flex;
     justify-content: flex-end;
@@ -1131,7 +1132,7 @@ body {
 
 
 .detail-main {
-    position: relative; /* Context for absolute positioning of close button if needed, though flex works too */
+    position: relative; 
 }
 
 .close-detail-btn {
@@ -1154,14 +1155,14 @@ body {
     background-color: rgba(0,0,0,0.1);
 }
 
-/* Popup Modal Styles */
+
 .popup-modal {
     position: fixed;
     top: 80px;
     left: 0;
     width: 100%;
     height: calc(100% - 80px);
-    z-index: 2000; /* Higher than other modals */
+    z-index: 2000; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1236,7 +1237,7 @@ body {
     background-color: #13554B;
 }
 
-/* Confirm Modal Styles */
+
 .confirm-modal-content {
     padding: 0 !important;
     width: 400px !important;
@@ -1303,4 +1304,289 @@ body {
 
 .confirm-btn.giveup:hover {
     background-color: #0A453F;
+}
+
+/* Challenge Over Modal Styles */
+.challenge-over-content {
+    width: 600px !important;
+    padding: 50px 40px !important;
+    align-items: center;
+}
+
+.challenge-over-content h2 {
+    font-family: serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.challenge-over-content .subtitle {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.ranking-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    border: 2px solid #176B5F;
+    border-radius: 15px;
+    padding: 15px 30px;
+    width: 100%;
+}
+
+.ranking-item .rank {
+    font-size: 24px;
+    font-weight: 700;
+    margin-right: 20px;
+}
+
+.ranking-item .name {
+    font-size: 16px;
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.score-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.score-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+    min-width: 60px;
+}
+
+.score-group .label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.score-group .value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #176B5F;
+}
+
+.score-info .divider {
+    width: 1px;
+    height: 30px;
+    background-color: #e0e0e0;
+}
+
+.close-challenge-over {
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    background-color: #888;
+    color: white;
+}
+
+.close-challenge-over:hover {
+    background-color: #666;
+}
+
+.close-btn-wrapper.position-top-right {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.close-btn-wrapper.position-top-right:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.close-challenge-over-x {
+    display: block;
+}
+
+/* Attendance Section */
+.attendance-section {
+    width: 100%;
+    height: calc(100vh - 80px); /* Subtract header height */
+    background: url('img/background.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.attendance-section.hidden {
+    display: none;
+}
+
+.attendance-header {
+    text-align: center;
+    margin-bottom: 50px;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.attendance-header h1 {
+    font-size: 80px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -2px;
+}
+
+.attendance-header p {
+    font-size: 24px;
+    font-weight: 500;
+    opacity: 1;
+}
+
+.attendance-container {
+    width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.attendance-board {
+    background-color: #F2F2F2;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.attendance-days {
+    display: flex;
+    justify-content: space-around;
+    background-color: #DDDDDD;
+    padding: 25px 30px;
+}
+
+.attendance-days span {
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #000;
+    width: 140px; 
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.attendance-cards {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 30px;
+    background-color: #F2F2F2; 
+}
+
+.att-card {
+    width: 140px;
+    height: 170px;
+    background-color: #DCDCDC;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1), inset 0 2px 5px rgba(255,255,255,0.5);
+    gap: 10px;
+}
+
+.att-card .label {
+    font-size: 16px;
+    color: #555;
+    font-weight: 400;
+}
+
+.att-card .point {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: #444;
+}
+
+.attendance-footer {
+    text-align: right;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    padding-right: 10px;
+    text-align: center;
+}
+.attendance-cards {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f5f5f5; /* Main board color */
+}
+
+.att-card {
+    width: 120px;
+    height: 140px;
+    background-color: #D8D8D8; /* Card bg */
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Soft shadow */
+    /* Inner shadow/gradient effect in image? It looks like a simple rounded rect with inner bevel or just shadow */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05), 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.att-card .label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.att-card .point {
+    font-size: 20px;
+    font-weight: 600;
+    color: #444;
+}
+
+.attendance-footer {
+    text-align: right;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+.att-card {
+    cursor: pointer; /* Checkable implies interactive */
+    transition: transform 0.2s ease;
+}
+
+.att-card:active {
+    transform: scale(0.95);
+}
+
+.att-card.checked {
+    background-image: url('img/attendance check.png');
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.att-card.checked span {
+    display: none;
 }

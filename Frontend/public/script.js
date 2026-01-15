@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Custom Alert Logic
+    
     const alertModal = document.getElementById('custom-alert-modal');
     const alertText = document.getElementById('custom-alert-text');
     const alertCloseBtn = document.getElementById('custom-alert-close');
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alertText.textContent = message;
             alertModal.classList.remove('hidden');
         } else {
-            alert(message); // Fallback
+            alert(message); 
         }
     }
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach((item, index) => {
             item.classList.remove('small', 'medium', 'active');
             
-            // Re-assign based on new index
+            
             if (index === 0 || index === 4) {
                 item.classList.add('small');
             } else if (index === 1 || index === 3) {
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Challenge Modal
+    
     const challengeLink = document.getElementById('challenge-link');
     const challengeModal = document.getElementById('challenge-modal');
 
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Ongoing Challenges Interaction
+    
     const ongoingModal = document.getElementById('ongoing-challenge-modal');
     const goToOngoingLink = document.getElementById('go-to-ongoing-challenges');
     const backToAllLink = document.getElementById('back-to-all-challenges');
@@ -141,12 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Challenge Detail View Interaction
+    
     const detailButtons = document.querySelectorAll('.detail-btn');
     const detailView = document.getElementById('challenge-detail-view');
     let lastActiveModal = null;
 
-    // Store original detail view HTML content for reset
+    
     let originalMembers = '';
     let originalProgress = '';
     let originalStatus = '';
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (goalBox) goalBox.textContent = goal;
     }
 
-    // Track current challenge being viewed in detail logic
+    
     let currentDetailCard = null;
     let currentDetailChallengeData = null;
 
@@ -214,21 +214,30 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => {
                 resetDetailView();
 
-                // Determine which modal the button belongs to
-                const parentModal = btn.closest('.modal');
+                
+                const parentModal = btn.closest('.popup-modal') || btn.closest('.modal');
                 if (parentModal) {
                     lastActiveModal = parentModal;
                     parentModal.classList.add('hidden');
                 } else {
-                    // Fallback just in case
-                    if (challengeModal) challengeModal.classList.add('hidden');
-                    if (ongoingModal) ongoingModal.classList.add('hidden');
+                    // Try to guess based on visibility
+                    if (challengeModal && !challengeModal.classList.contains('hidden')) {
+                         lastActiveModal = challengeModal;
+                         challengeModal.classList.add('hidden');
+                    } else if (ongoingModal && !ongoingModal.classList.contains('hidden')) {
+                         lastActiveModal = ongoingModal;
+                         ongoingModal.classList.add('hidden');
+                    } else {
+                        // Fallback
+                        if (challengeModal) challengeModal.classList.add('hidden');
+                        if (ongoingModal) ongoingModal.classList.add('hidden');
+                    }
                 }
 
-                // Update Goal Text based on clicked card
+                
                 const card = btn.closest('.challenge-card');
-                currentDetailCard = card; // Set current card
-                currentDetailChallengeData = null; // Static card
+                currentDetailCard = card; 
+                currentDetailChallengeData = null; 
 
                 if (card) {
                     const infos = card.querySelectorAll('.card-info p');
@@ -250,16 +259,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Logo Click (Return Home)
+    
     const logo = document.querySelector('.logo');
+    const attendanceSection = document.querySelector('.attendance-section');
+    
     if (logo) {
         logo.addEventListener('click', () => {
-            // Hide Modals
+            
             if (challengeModal) challengeModal.classList.add('hidden');
             if (ongoingModal) ongoingModal.classList.add('hidden');
             if (detailView) detailView.classList.add('hidden');
+            if (attendanceSection) attendanceSection.classList.add('hidden'); // Hide attendance
 
-            // Show Main Content
+            
             const selectors = [
                 '.main',
                 '.challenge-quicklink',
@@ -277,23 +289,56 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    
+    // Attendance Check Logic
+    const attendanceLink = document.getElementById('attendance-link');
+    if (attendanceLink && attendanceSection) {
+        attendanceLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Hide other sections
+            const selectors = [
+                '.main',
+                '.challenge-quicklink',
+                '.ranking-quicklink',
+                '.shop-quicklink',
+                '.community-quicklink',
+                '.footer'
+            ];
+            
+            selectors.forEach(selector => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+            
+            // Hide modals
+            if (challengeModal) challengeModal.classList.add('hidden');
+            if (ongoingModal) ongoingModal.classList.add('hidden');
+            if (detailView) detailView.classList.add('hidden');
+            
+            // Show attendance
+            attendanceSection.classList.remove('hidden');
+        });
+    }
 
-    // Close Detail View Button
+    
     const closeDetailBtn = document.querySelector('.close-detail-btn');
     if (closeDetailBtn && detailView) {
         closeDetailBtn.addEventListener('click', () => {
             detailView.classList.add('hidden');
-            // Return to the modal we came from
+            
             if (lastActiveModal) {
                 lastActiveModal.classList.remove('hidden');
             } else if (ongoingModal) {
-                // Default fallback
+                
                 ongoingModal.classList.remove('hidden');
             }
         });
     }
 
-    // Create Challenge Modal Interaction
+    
     const createChallengeBtns = document.querySelectorAll('.create-challenge-btn');
     const createChallengeModal = document.getElementById('create-challenge-modal');
     const createModalOverlay = createChallengeModal ? createChallengeModal.querySelector('.popup-overlay') : null;
@@ -313,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Edit Challenge Modal variables
+    
     const editChallengeModal = document.getElementById('edit-challenge-modal');
     const editModalOverlay = editChallengeModal ? editChallengeModal.querySelector('.popup-overlay') : null;
     const updateChallengeBtn = editChallengeModal ? editChallengeModal.querySelector('.update-challenge-btn') : null;
@@ -344,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
             editGoalInput.value = challengeData.goal;
             editCodeInput.value = challengeData.code || '';
         } else {
-            // Static card parsing
+            
             const nameComp = card.querySelector('.card-top h3');
             const name = nameComp ? nameComp.textContent : '';
             
@@ -356,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
              editNameInput.value = name;
              editUserInput.value = ''; 
-             editDurationInput.value = 30; // Default
+             editDurationInput.value = 30; 
              editGoalInput.value = goal;
              editCodeInput.value = '';
         }
@@ -377,9 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
                  return;
              }
 
-            // Update Logic
+            
             if (currentEditingChallenge) {
-                // Update data object
+                
                 currentEditingChallenge.name = newName;
                 currentEditingChallenge.duration = newDuration;
                 currentEditingChallenge.goal = newGoal;
@@ -387,10 +432,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentEditingChallenge.code = newCode;
                 saveChallenges();
                 
-                // Update DOM
+                
                 updateCardDOM(currentEditingCard, currentEditingChallenge.name, currentEditingChallenge.duration, currentEditingChallenge.goal, currentEditingChallenge.createdAt);
             } else {
-                // Update Static DOM
+                
                 updateCardDOM(currentEditingCard, newName, newDuration, newGoal, new Date());
             }
             
@@ -402,11 +447,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCardDOM(card, name, duration, goal, startDate) {
          if (!card) return;
          
-         // Update Title
+         
          const title = card.querySelector('.card-top h3');
          if (title) title.textContent = name;
 
-         // Update Info
+         
          const today = new Date(startDate);
          const endDate = new Date(today);
          endDate.setDate(today.getDate() + duration);
@@ -421,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
          });
     }
 
-    // Attach listeners to initial static cards
+    
     const initialEditBtns = document.querySelectorAll('.challenge-card .edit-btn');
     initialEditBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -431,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Store created challenges for code search
+    
     let createdChallenges = JSON.parse(localStorage.getItem('createdChallenges')) || [];
 
     function saveChallenges() {
@@ -441,8 +486,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderChallenge(challengeData) {
         const { name, duration, goal, userName, createdAt } = challengeData;
 
-        // Calculate dates
-        // Use saved creation date or default to now if missing (migration)
+        
+        
         const today = createdAt ? new Date(createdAt) : new Date();
         const endDate = new Date(today);
         endDate.setDate(today.getDate() + duration);
@@ -453,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const dateString = `${formatDate(today)} ~ ${formatDate(endDate)}`;
 
-        // Create Card HTML
+        
         const newCard = document.createElement('div');
         newCard.classList.add('challenge-card');
         newCard.innerHTML = `
@@ -472,7 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         `;
 
-        // Add event listener to new edit button
+        
         const newEditBtn = newCard.querySelector('.edit-btn');
         if (newEditBtn) {
             newEditBtn.addEventListener('click', (e) => {
@@ -481,16 +526,16 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Add event listener to new detail button
+        
         const newDetailBtn = newCard.querySelector('.detail-btn');
         newDetailBtn.addEventListener('click', () => {
-            // Determine which modal the button belongs to
+            
             if (ongoingModal) {
                 lastActiveModal = ongoingModal;
                 ongoingModal.classList.add('hidden');
             }
             
-            // Set current detail context
+            
             currentDetailCard = newCard;
             currentDetailChallengeData = challengeData;
 
@@ -499,19 +544,19 @@ document.addEventListener('DOMContentLoaded', () => {
             if (detailView) detailView.classList.remove('hidden');
         });
 
-        // Append to Ongoing Challenge Grid
+        
         const ongoingGrid = ongoingModal ? ongoingModal.querySelector('.challenge-grid') : null;
         if (ongoingGrid) {
             ongoingGrid.appendChild(newCard);
         }
     }
 
-    // Render stored challenges on load
+    
     createdChallenges.forEach(challenge => {
         renderChallenge(challenge);
     });
 
-    // Start Challenge (Create Logic)
+    
     const startChallengeBtn = document.querySelector('.start-challenge-btn');
     if (startChallengeBtn) {
         startChallengeBtn.addEventListener('click', () => {
@@ -525,6 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
              const duration = parseInt(durationInput.value) || 0;
              const goal = goalInput.value;
              const userName = userInput.value;
+             // Code is optional
              const code = codeInput ? codeInput.value.trim() : '';
 
              if (!name || !duration || !goal) {
@@ -541,14 +587,14 @@ document.addEventListener('DOMContentLoaded', () => {
                  createdAt: new Date().toISOString()
              };
 
-             // Save to array and local storage
+             
              createdChallenges.push(newChallenge);
              saveChallenges();
 
-             // Render the card
+             
              renderChallenge(newChallenge);
 
-             // Close Modal and Clear Inputs
+             
              createChallengeModal.classList.add('hidden');
              nameInput.value = '';
              userInput.value = '';
@@ -556,13 +602,13 @@ document.addEventListener('DOMContentLoaded', () => {
              goalInput.value = '';
              if(codeInput) codeInput.value = '';
              
-             // Ensure we are showing ongoing challenges if not already
+             
              if (challengeModal) challengeModal.classList.add('hidden');
              if (ongoingModal) ongoingModal.classList.remove('hidden');
         });
     }
 
-    // Join Challenge by Code Logic
+    
     function joinChallengeByCode(inputSelector) {
         const input = document.querySelector(inputSelector);
         if (!input) return;
@@ -578,27 +624,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (challenge) {
             showAlert(`'${challenge.name}' 챌린지에 입장합니다!`);
             
-            // Hide current modals
+            
             if (challengeModal) challengeModal.classList.add('hidden');
             if (ongoingModal) ongoingModal.classList.add('hidden');
             
-            // Set last active modal to ongoing (so back button works)
+            
             lastActiveModal = ongoingModal; 
             
-            // Update Detail View with challenge info
+            
             updateDetailView(challenge.userName, challenge.duration, challenge.goal);
             
-            // Open Detail View
+            
             if (detailView) detailView.classList.remove('hidden');
             
-            // Clear input
+            
             input.value = '';
         } else {
             showAlert('유효하지 않은 코드입니다.');
         }
     }
 
-    // Attach listeners for Code Search
+    
     const allCodeBtn = document.getElementById('all-challenge-code-btn');
     const allCodeInput = document.getElementById('all-challenge-code-input');
     
@@ -623,14 +669,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Give Up Modal Interaction
+    
     const giveUpBtn = document.querySelector('.btn-giveup');
     const giveUpModal = document.getElementById('give-up-modal');
     const giveUpCancelBtn = giveUpModal ? giveUpModal.querySelector('.cancel') : null;
     const giveUpConfirmBtn = giveUpModal ? giveUpModal.querySelector('.giveup') : null;
     const giveUpOverlay = giveUpModal ? giveUpModal.querySelector('.popup-overlay') : null;
 
-    // Final Give Up Modal Variables
+    
     const finalGiveUpModal = document.getElementById('final-give-up-modal');
     const finalGiveUpCancelBtn = finalGiveUpModal ? finalGiveUpModal.querySelector('.cancel') : null;
     const finalGiveUpConfirmBtn = finalGiveUpModal ? finalGiveUpModal.querySelector('.real-giveup') : null;
@@ -651,31 +697,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (finalGiveUpConfirmBtn) {
         finalGiveUpConfirmBtn.addEventListener('click', () => {
              finalGiveUpModal.classList.add('hidden');
-             // Close Detail View as well
+             
              if (detailView) detailView.classList.add('hidden');
              
-             // Get info to identify card across modals
+             
              let cardName = '';
              if (currentDetailCard) {
                  const h3 = currentDetailCard.querySelector('h3');
                  if (h3) cardName = h3.textContent.trim();
-                 currentDetailCard.remove(); // Remove the clicked card DOM
+                 currentDetailCard.remove(); 
              }
 
-             // Remove from storage if dynamic
+             
              if (currentDetailChallengeData) {
                  createdChallenges = createdChallenges.filter(c => c !== currentDetailChallengeData);
                  saveChallenges();
              } else if (cardName) {
-                 // Fallback: Remove by Name matching (for cases where ref might be lost or static mixed)
+                 
                  const beforeCount = createdChallenges.length;
                  createdChallenges = createdChallenges.filter(c => c.name !== cardName);
                  if (createdChallenges.length !== beforeCount) saveChallenges();
              }
              
-             // Also remove from Ongoing Modal if we weren't there
+             
              if (ongoingModal && cardName) {
-                 // Remove any card with same name in Ongoing
+                 
                  const ongoingCards = ongoingModal.querySelectorAll('.challenge-card');
                  ongoingCards.forEach(card => {
                      const h3 = card.querySelector('h3');
@@ -685,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  });
              }
              
-             // Also remove from All Challenges Modal just in case
+             
              if (challengeModal && cardName) {
                  const allCards = challengeModal.querySelectorAll('.challenge-card');
                  allCards.forEach(card => {
@@ -696,7 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  });
              }
 
-             // Navigate to Ongoing Challenges to show state
+             
              if (challengeModal) challengeModal.classList.add('hidden');
              if (ongoingModal) ongoingModal.classList.remove('hidden');
              
@@ -728,4 +774,68 @@ document.addEventListener('DOMContentLoaded', () => {
              if (finalGiveUpModal) finalGiveUpModal.classList.remove('hidden');
         });
     }
+
+    // Challenge Over Modal Logic
+    const completeBtn = document.querySelector('.btn-complete');
+    const challengeOverModal = document.getElementById('challenge-over-modal');
+
+    // To remove the ongoing modal when challenge is over
+    // ongoingModal is already defined above
+
+    if (completeBtn && challengeOverModal) {
+        completeBtn.addEventListener('click', () => {
+            challengeOverModal.classList.remove('hidden');
+        });
+
+        const overlay = challengeOverModal.querySelector('.popup-overlay');
+        const closeX = challengeOverModal.querySelector('.close-challenge-over-x');
+        const closeWrapper = challengeOverModal.querySelector('.close-btn-wrapper');
+
+        const closeChallengeOverAndCleanup = () => {
+            challengeOverModal.classList.add('hidden');
+            
+            // Close the detail view as well
+            if (detailView) detailView.classList.add('hidden');
+
+            // Delete the completed challenge
+            if (currentDetailChallengeData) {
+                const idx = createdChallenges.indexOf(currentDetailChallengeData);
+                if (idx > -1) {
+                    createdChallenges.splice(idx, 1);
+                    saveChallenges();
+                }
+            }
+            if (currentDetailCard) {
+                currentDetailCard.remove();
+            }
+            currentDetailCard = null;
+            currentDetailChallengeData = null;
+
+            // Restore the previous modal
+            if (lastActiveModal) {
+                lastActiveModal.classList.remove('hidden');
+            } else {
+                if (ongoingModal) ongoingModal.classList.add('hidden');
+            }
+        };
+
+        if (overlay) {
+            overlay.addEventListener('click', closeChallengeOverAndCleanup);
+        }
+
+        if (closeX || closeWrapper) {
+            // Support clicking either the svg or the wrapper div
+            const target = closeWrapper || closeX;
+            target.addEventListener('click', closeChallengeOverAndCleanup);
+        }
+    }
+
+    // Attendance Card Click Effect
+    const attCards = document.querySelectorAll('.att-card');
+    attCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // Toggle check status
+            card.classList.toggle('checked');
+        });
+    });
 });

@@ -13,7 +13,7 @@
                 <img src="img/logo.png" alt="Stufit Logo">
             </div>
             <div class="nav">
-                <a href="#">출석체크</a>
+                <a href="#" id="attendance-link">출석체크</a>
                 <a href="#" id="challenge-link">챌린지</a>
                 <a href="#">랭킹</a>
                 <a href="#">커뮤니티</a>
@@ -26,6 +26,58 @@
         <div class="main">
             <h1>게임처럼 경쟁하고 보상을 얻으며<br>꾸준히 자기개발</h1>
             <p>학습 커뮤니티에서 공부 이야기를 나누고, 함께 챌린지에<br>도전해 목표를 완주해 보세요.</p>
+        </div>
+        <div class="attendance-section hidden">
+            <div class="attendance-header">
+                <h1>출석체크</h1>
+                <p>7일 연속 출석시 400포인트 지급!</p>
+            </div>
+            <div class="attendance-container">
+                <div class="attendance-board">
+                    <div class="attendance-days">
+                        <span>SUN</span>
+                        <span>MON</span>
+                        <span>TUE</span>
+                        <span>WED</span>
+                        <span>THU</span>
+                        <span>FRI</span>
+                        <span>SAT</span>
+                    </div>
+                    <div class="attendance-cards">
+                        <div class="att-card">
+                            <span class="label">일일 포인트</span>
+                            <span class="point">100P</span>
+                        </div>
+                        <div class="att-card">
+                            <span class="label">일일 포인트</span>
+                            <span class="point">120P</span>
+                        </div>
+                        <div class="att-card">
+                            <span class="label">일일 포인트</span>
+                            <span class="point">140P</span>
+                        </div>
+                        <div class="att-card">
+                            <span class="label">일일 포인트</span>
+                            <span class="point">160P</span>
+                        </div>
+                        <div class="att-card">
+                            <span class="label">일일 포인트</span>
+                            <span class="point">180P</span>
+                        </div>
+                        <div class="att-card">
+                            <span class="label">일일 포인트</span>
+                            <span class="point">200P</span>
+                        </div>
+                        <div class="att-card">
+                            <span class="label">일일 포인트</span>
+                            <span class="point">220P</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="attendance-footer">
+                    총 연속 출석체크일 수 : 12일
+                </div>
+            </div>
         </div>
         <div class="challenge-quicklink">
             <div class="challenge-quicklink-inner">
@@ -340,7 +392,6 @@
             </div>
         </div>
     </div>
-    <!-- Challenge Modal -->
     <div id="challenge-modal" class="modal hidden">
         <div class="modal-content">
             <div class="ongoing-challenge-link">
@@ -365,7 +416,7 @@
             </div>
             
             <div class="challenge-grid">
-                <!-- Card 1 -->
+                
                 <div class="challenge-card">
                     <div class="card-top">
                         <h3>일상 챌린지</h3>
@@ -382,7 +433,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
+                
                 <div class="challenge-card">
                     <div class="card-top">
                         <h3>일상 챌린지</h3>
@@ -399,7 +450,7 @@
                     </div>
                 </div>
 
-                <!-- Card 3 -->
+                
                 <div class="challenge-card">
                     <div class="card-top">
                         <h3>운동 챌린지</h3>
@@ -418,8 +469,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Ongoing Challenge Modal -->
     <div id="ongoing-challenge-modal" class="modal hidden">
         <div class="modal-content">
             <div class="ongoing-challenge-link">
@@ -444,7 +493,7 @@
             </div>
             
             <div class="challenge-grid">
-                <!-- Card 1 -->
+                
                 <div class="challenge-card">
                     <div class="card-top">
                         <h3>일상 챌린지</h3>
@@ -461,7 +510,7 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
+                
                 <div class="challenge-card">
                     <div class="card-top">
                         <h3>기말고사챌린지</h3>
@@ -480,10 +529,9 @@
             </div>
         </div>
     </div>
-    <!-- Challenge Detail View -->
     <div id="challenge-detail-view" class="modal hidden">
         <div class="detail-view-container">
-            <!-- Sidebar -->
+            
             <div class="detail-sidebar">
                 <h2>MEMBER</h2>
                 <div class="member-list">
@@ -514,7 +562,7 @@
                 </div>
             </div>
 
-            <!-- Main Content -->
+            
             <div class="detail-main">
                 <button class="close-detail-btn">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -522,7 +570,7 @@
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
-                <!-- Progress Section -->
+                
                 <div class="detail-card">
                     <h3>챌린지 진행도</h3>
                     <div class="progress-area">
@@ -537,14 +585,14 @@
                     </div>
                 </div>
 
-                <!-- Goal Section -->
+                
                 <div class="detail-card">
                     <h3>챌린지 목표</h3>
                     <div class="goal-box">아침 6시 기상</div>
                     <button class="submit-btn">제출하기</button>
                 </div>
 
-                <!-- Status Section -->
+                
                 <div class="detail-card status-card">
                     <h3>참여 현황</h3>
                     <div class="status-grid">
@@ -613,8 +661,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Create Challenge Modal -->
     <div id="create-challenge-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content">
@@ -641,8 +687,6 @@
             <button class="start-challenge-btn">챌린지 시작하기</button>
         </div>
     </div>
-
-    <!-- Edit Challenge Modal -->
     <div id="edit-challenge-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content">
@@ -669,8 +713,6 @@
             <button class="update-challenge-btn start-challenge-btn">수정 완료하기</button>
         </div>
     </div>
-
-    <!-- Give Up Confirmation Modal -->
     <div id="give-up-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content confirm-modal-content">
@@ -685,8 +727,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Final Give Up Confirmation Modal -->
     <div id="final-give-up-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content confirm-modal-content">
@@ -701,8 +741,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Custom Alert Modal -->
     <div id="custom-alert-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content" style="width: 400px; text-align: center; padding: 40px;">
@@ -710,7 +748,80 @@
             <button id="custom-alert-close" class="start-challenge-btn" style="width: 120px; margin: 0 auto; padding: 12px;">확인</button>
         </div>
     </div>
-    
+    <div id="challenge-over-modal" class="popup-modal hidden">
+        <div class="popup-overlay"></div>
+        <div class="popup-content challenge-over-content">
+            <h2>Challenge Over</h2>
+            <p class="subtitle">최종순위</p>
+            <div class="ranking-list">
+                <div class="ranking-item">
+                    <span class="rank">1</span>
+                    <span class="name">김예선</span>
+                    <div class="score-info">
+                        <div class="score-group">
+                            <span class="label">포인트</span>
+                            <span class="value plus">+1500</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="score-group">
+                            <span class="label">점수</span>
+                            <span class="value">100</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <span class="rank">2</span>
+                    <span class="name">김예선</span>
+                    <div class="score-info">
+                        <div class="score-group">
+                            <span class="label">포인트</span>
+                            <span class="value plus">+1000</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="score-group">
+                            <span class="label">점수</span>
+                            <span class="value">50</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <span class="rank">3</span>
+                    <span class="name">김예선</span>
+                    <div class="score-info">
+                        <div class="score-group">
+                            <span class="label">포인트</span>
+                            <span class="value plus">+1000</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="score-group">
+                            <span class="label">점수</span>
+                            <span class="value">50</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <span class="rank">4</span>
+                    <span class="name">김예선</span>
+                    <div class="score-info">
+                        <div class="score-group">
+                            <span class="label">포인트</span>
+                            <span class="value minus">-500</span>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="score-group">
+                            <span class="label">점수</span>
+                            <span class="value minus">-30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="close-btn-wrapper position-top-right">
+                <svg class="close-challenge-over-x" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
