@@ -149,47 +149,174 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let originalMembers = '';
     let originalProgress = '';
-    let originalStatus = '';
+    // Status grid might be removed in special layout, but we keep original string if needed
+    // Actually we are now capturing the whole detailMain.
     
+    // Kept for reference but mostly superseded by new logic
     const memberList = detailView ? detailView.querySelector('.member-list') : null;
-    const progressArea = detailView ? detailView.querySelector('.progress-area') : null;
-    const statusGrid = detailView ? detailView.querySelector('.status-grid') : null;
-
     if (memberList) originalMembers = memberList.innerHTML;
-    if (progressArea) originalProgress = progressArea.innerHTML;
-    if (statusGrid) originalStatus = statusGrid.innerHTML;
+
+    // The resetDetailView is now defined above to handle full layout reset
+
+
+    
+    let currentDetailCard = null;
+    let currentDetailChallengeData = null;
+    let timerInterval = null; // Timer interval variable
+
+    // Capture original state of the whole detail main area to support full layout changes
+    const detailMain = detailView ? detailView.querySelector('.detail-main') : null;
+    let originalDetailMain = '';
+    if (detailMain) originalDetailMain = detailMain.innerHTML;
 
     function resetDetailView() {
+        if (timerInterval) clearInterval(timerInterval); // Stop any running timer
         if (memberList) memberList.innerHTML = originalMembers;
-        if (progressArea) progressArea.innerHTML = originalProgress;
-        if (statusGrid) statusGrid.innerHTML = originalStatus;
+        // Restore the full main area if we changed it completely
+        if (detailMain) detailMain.innerHTML = originalDetailMain;
+        
+        // Re-bind close button event since we replaced innerHTML
+        const newCloseBtn = detailView.querySelector('.close-detail-btn');
+        if (newCloseBtn) {
+            newCloseBtn.addEventListener('click', () => {
+                detailView.classList.add('hidden');
+                if (lastActiveModal) lastActiveModal.classList.remove('hidden');
+                else if (ongoingModal) ongoingModal.classList.remove('hidden');
+            });
+        }
     }
 
-    function updateDetailView(userName, duration, goal) {
-        if (memberList) {
-            memberList.innerHTML = `
+    function updateDetailView(challengeData) {
+        const { userName, duration, goal, category } = challengeData;
+        const isSpecialCategory = category === 'study' || category === 'exercise';
+
+        if (isSpecialCategory) {
+            // --- Special Layout for Study/Exercise ---
+            
+            // 1. Sidebar (Member List with Status)
+            if (memberList) {
+                // Mock data for demonstration
+                const members = [
+                    { name: userName, status: '인증 완료', type: 'success' },
+                    { name: '유태민', status: '미제출', type: 'danger' },
+                    { name: '이정민', status: '인증 실패', type: 'warning' },
+                    { name: '박현서', status: '미제출', type: 'danger' }
+                ];
+                
+                memberList.innerHTML = members.map(m => `
+                    <div class="member-item-status-layout">
+                        <div class="member-info-group">
+                            <div class="member-avatar">
+                                <img src="img/Profile.png" alt="Profile">
+                            </div>
+                            <span class="member-name">${m.name}</span>
+                        </div>
+                        <span class="member-status-text ${m.type}">${m.status}</span>
+                    </div>
+                `).join('');
+            }
+
+            // 2. Main Area (Progress, Goal with Button, Timer)
+            if (detailMain) {
+                // Keep the close button at top
+                const closeBtnHTML = `
+                <button class="close-detail-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>`;
+
+                const progressCardHTML = `
+                <div class="detail-card">
+                    <h3>챌린지 진행도</h3>
+                    <div class="progress-area">
+                        <div class="progress-info">
+                            <span class="days-elapsed">0일 경과</span>
+                            <span class="percentage">0%</span>
+                            <span class="days-left">${duration}일 남음</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>`;
+
+                const goalCardHTML = `
+                <div class="detail-card">
+                    <h3>챌린지 목표</h3>
+                    <div class="goal-box">${goal}</div>
+                    <button class="submit-btn">제출하기</button>
+                </div>`;
+
+                const timerCardHTML = `
+                <div class="detail-card">
+                    <h3>타이머</h3>
+                    <div class="timer-container">
+                        <div class="timer-display" id="timer-val">01:00:00</div>
+                        <button class="timer-btn" id="timer-toggle-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>`;
+                
+                const actionsHTML = `
+                <div class="detail-actions">
+                    <button class="btn-giveup">give up</button>
+                    <button class="btn-complete">complete</button>
+                </div>`;
+
+                detailMain.innerHTML = closeBtnHTML + progressCardHTML + goalCardHTML + timerCardHTML + actionsHTML;
+
+                // Re-bind actions
+                bindDetailActions();
+
+                // Initialize Timer Logic
+                initTimer();
+            }
+
+        } else {
+            // --- Default Layout (Daily, etc.) ---
+            
+            // 1. Sidebar (Simple Member List)
+            if (memberList) {
+                memberList.innerHTML = `
                 <div class="member-item">
                     <div class="member-avatar">
                         <img src="img/Profile.png" alt="Profile">
                     </div>
                     <span class="member-name">${userName}</span>
-                </div>
-            `;
-        }
-        if (progressArea) {
-             progressArea.innerHTML = `
-                <div class="progress-info">
-                    <span class="days-elapsed">0일 경과</span>
-                    <span class="percentage">0%</span>
-                    <span class="days-left">${duration}일 남음</span>
-                </div>
-                <div class="progress-bar-bg">
-                    <div class="progress-bar-fill" style="width: 0%;"></div>
-                </div>
-            `;
-        }
-        if (statusGrid) {
-            statusGrid.innerHTML = `
+                </div>`;
+            }
+
+            // 2. Main Area (Restore original via resetDetailView, then update content)
+            // Note: resetDetailView already restored originalHTML. We just need to update dynamic values.
+            
+            // Update Goal
+            const goalBox = detailMain.querySelector('.goal-box');
+            if (goalBox) goalBox.textContent = goal;
+
+            // Update Progress
+            const pArea = detailMain.querySelector('.progress-area');
+            if (pArea) {
+                 pArea.innerHTML = `
+                    <div class="progress-info">
+                        <span class="days-elapsed">0일 경과</span>
+                        <span class="percentage">0%</span>
+                        <span class="days-left">${duration}일 남음</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: 0%;"></div>
+                    </div>
+                `;
+            }
+
+            // Update Status Grid
+            const sGrid = detailMain.querySelector('.status-grid');
+            if (sGrid) {
+                sGrid.innerHTML = `
                 <div class="status-item">
                     <div class="status-user">
                         <div class="status-avatar">
@@ -198,29 +325,106 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${userName}</span>
                     </div>
                     <span class="status-label danger">미제출</span>
-                </div>
-            `;
+                </div>`;
+            }
+            
+            // Re-bind actions (give up, complete) as the DOM for buttons might be reset
+             bindDetailActions();
         }
-        const goalBox = detailView.querySelector('.goal-box');
-        if (goalBox) goalBox.textContent = goal;
+    }
+    
+    function bindDetailActions() {
+        // Close Button
+        const closeBtn = detailMain.querySelector('.close-detail-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                detailView.classList.add('hidden');
+                if (timerInterval) clearInterval(timerInterval);
+                if (lastActiveModal) lastActiveModal.classList.remove('hidden');
+                else if (ongoingModal) ongoingModal.classList.remove('hidden');
+            });
+        }
+
+        // Give Up
+        const giveUp = detailMain.querySelector('.btn-giveup');
+        if (giveUp) {
+            giveUp.addEventListener('click', () => {
+                 document.getElementById('give-up-modal').classList.remove('hidden');
+            });
+        }
+
+        // Complete
+        const complete = detailMain.querySelector('.btn-complete');
+        if (complete) {
+            complete.addEventListener('click', () => {
+                document.getElementById('challenge-over-modal').classList.remove('hidden');
+            });
+        }
+        
+        // Submit button (for special category)
+        const submitBtn = detailMain.querySelector('.submit-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                showAlert('인증이 제출되었습니다!');
+            });
+        }
     }
 
-    
-    let currentDetailCard = null;
-    let currentDetailChallengeData = null;
+    function initTimer() {
+        const display = document.getElementById('timer-val');
+        const btn = document.getElementById('timer-toggle-btn');
+        if (!display || !btn) return;
+
+        let totalSeconds = 3600; // 1 hour
+        let isRunning = false;
+        
+        const formatTime = (sec) => {
+            const h = Math.floor(sec / 3600);
+            const m = Math.floor((sec % 3600) / 60);
+            const s = sec % 60;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        };
+
+        display.textContent = formatTime(totalSeconds);
+
+        const updateTimer = () => {
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                display.textContent = formatTime(totalSeconds);
+            } else {
+                clearInterval(timerInterval);
+                isRunning = false;
+                showAlert('타이머가 종료되었습니다.');
+            }
+        };
+
+        btn.addEventListener('click', () => {
+            if (isRunning) {
+                // Pause
+                clearInterval(timerInterval);
+                isRunning = false;
+                // Change icon to Play
+                btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>';
+            } else {
+                // Start
+                timerInterval = setInterval(updateTimer, 1000);
+                isRunning = true;
+                // Change icon to Pause
+                 btn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+            }
+        });
+    }
 
     if (detailButtons.length > 0 && detailView) {
         detailButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 resetDetailView();
 
-                
                 const parentModal = btn.closest('.popup-modal') || btn.closest('.modal');
                 if (parentModal) {
                     lastActiveModal = parentModal;
                     parentModal.classList.add('hidden');
                 } else {
-                    // Try to guess based on visibility
                     if (challengeModal && !challengeModal.classList.contains('hidden')) {
                          lastActiveModal = challengeModal;
                          challengeModal.classList.add('hidden');
@@ -228,32 +432,45 @@ document.addEventListener('DOMContentLoaded', () => {
                          lastActiveModal = ongoingModal;
                          ongoingModal.classList.add('hidden');
                     } else {
-                        // Fallback
                         if (challengeModal) challengeModal.classList.add('hidden');
                         if (ongoingModal) ongoingModal.classList.add('hidden');
                     }
                 }
 
-                
                 const card = btn.closest('.challenge-card');
                 currentDetailCard = card; 
                 currentDetailChallengeData = null; 
 
-                if (card) {
-                    const infos = card.querySelectorAll('.card-info p');
-                    let goalText = '';
-                    infos.forEach(p => {
-                        if (p.textContent.includes('목표 -')) {
-                            goalText = p.textContent.split('목표 -')[1].trim();
-                        }
-                    });
-                    
-                    const goalBox = detailView.querySelector('.goal-box');
-                    if (goalBox && goalText) {
-                        goalBox.textContent = goalText;
-                    }
-                }
+                // We need to find the challenge data object corresponding to this card to know the category
+                // For existing detailed buttons (hardcoded ones), they might not have data.
+                // But created ones will invoke the renderChallenge listener, not this one.
+                // Wait, renderChallenge adds its own listener.
+                // This block is for "initial (hardcoded)" detail buttons.
+                
+                // Let's assume hardcoded ones are "Daily" for now unless we change index.html data.
+                
+                // Mock data extraction from DOM for hardcoded cards
+                let nameText = '';
+                const h3 = card.querySelector('h3');
+                if(h3) nameText = h3.textContent;
+                
+                const infos = card.querySelectorAll('.card-info p');
+                let goalText = '';
+                let durationText = '30';
+                infos.forEach(p => {
+                    if (p.textContent.includes('목표 -')) goalText = p.textContent.split('목표 -')[1].trim();
+                });
+                
+                // Default to daily/hobby for existing hardcoded cards
+                const mockData = {
+                    name: nameText,
+                    duration: durationText,
+                    goal: goalText,
+                    userName: '김예선',
+                    category: 'hobby' 
+                };
 
+                updateDetailView(mockData);
                 detailView.classList.remove('hidden');
             });
         });
@@ -366,6 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editNameInput = document.getElementById('edit-challenge-name');
     const editUserInput = document.getElementById('edit-challenge-user');
     const editDurationInput = document.getElementById('edit-challenge-duration');
+    const editCategoryInput = document.getElementById('edit-challenge-category');
     const editGoalInput = document.getElementById('edit-challenge-goal');
     const editCodeInput = document.getElementById('edit-challenge-code');
 
@@ -388,6 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
             editDurationInput.value = challengeData.duration;
             editGoalInput.value = challengeData.goal;
             editCodeInput.value = challengeData.code || '';
+            if (editCategoryInput) editCategoryInput.value = challengeData.category || '';
         } else {
             
             const nameComp = card.querySelector('.card-top h3');
@@ -404,6 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
              editDurationInput.value = 30; 
              editGoalInput.value = goal;
              editCodeInput.value = '';
+             if (editCategoryInput) editCategoryInput.value = '';
         }
         
         if (editChallengeModal) editChallengeModal.classList.remove('hidden');
@@ -416,6 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
              const newGoal = editGoalInput.value;
              const newUser = editUserInput.value;
              const newCode = editCodeInput.value;
+             const newCategory = editCategoryInput ? editCategoryInput.value : '';
              
              if(!newName || !newDuration || !newGoal) {
                  showAlert('모든 필드를 입력해주세요.');
@@ -430,13 +651,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentEditingChallenge.goal = newGoal;
                 currentEditingChallenge.userName = newUser;
                 currentEditingChallenge.code = newCode;
+                currentEditingChallenge.category = newCategory;
                 saveChallenges();
                 
                 
-                updateCardDOM(currentEditingCard, currentEditingChallenge.name, currentEditingChallenge.duration, currentEditingChallenge.goal, currentEditingChallenge.createdAt);
+                updateCardDOM(currentEditingCard, currentEditingChallenge.name, currentEditingChallenge.duration, currentEditingChallenge.goal, currentEditingChallenge.createdAt, newCategory);
             } else {
                 
-                updateCardDOM(currentEditingCard, newName, newDuration, newGoal, new Date());
+                updateCardDOM(currentEditingCard, newName, newDuration, newGoal, new Date(), newCategory);
             }
             
             editChallengeModal.classList.add('hidden');
@@ -444,12 +666,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function updateCardDOM(card, name, duration, goal, startDate) {
+    function updateCardDOM(card, name, duration, goal, startDate, category) {
          if (!card) return;
-         
          
          const title = card.querySelector('.card-top h3');
          if (title) title.textContent = name;
+
+         const status = card.querySelector('.card-top .status');
+         if (status) {
+             const categoryMap = {
+                 'study': '공부',
+                 'exercise': '운동',
+                 'daily': '일상'
+             };
+             const categoryText = categoryMap[category] || '진행 중';
+             status.textContent = `(${categoryText})`;
+         }
 
          
          const today = new Date(startDate);
@@ -484,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderChallenge(challengeData) {
-        const { name, duration, goal, userName, createdAt } = challengeData;
+        const { name, duration, goal, userName, createdAt, category } = challengeData;
 
         
         
@@ -498,13 +730,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const dateString = `${formatDate(today)} ~ ${formatDate(endDate)}`;
 
+        const categoryMap = {
+             'study': '공부',
+             'exercise': '운동',
+             'daily': '일상'
+         };
+         const categoryText = categoryMap[category] || '진행 중';
         
         const newCard = document.createElement('div');
         newCard.classList.add('challenge-card');
         newCard.innerHTML = `
         <div class="card-top">
             <h3>${name}</h3>
-            <span class="status">(진행 중)</span>
+            <span class="status">(${categoryText})</span>
         </div>
         <div class="card-info">
             <p>참여 인원 - 현재 한명 참여중</p>
@@ -539,7 +777,8 @@ document.addEventListener('DOMContentLoaded', () => {
             currentDetailCard = newCard;
             currentDetailChallengeData = challengeData;
 
-            updateDetailView(userName, duration, goal);
+            // Updated to pass the full object
+            updateDetailView(challengeData);
 
             if (detailView) detailView.classList.remove('hidden');
         });
@@ -563,6 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
              const nameInput = document.getElementById('new-challenge-name');
              const userInput = document.getElementById('new-challenge-user');
              const durationInput = document.getElementById('new-challenge-duration');
+             const categoryInput = document.getElementById('new-challenge-category');
              const goalInput = document.getElementById('new-challenge-goal');
              const codeInput = document.getElementById('new-challenge-code');
              
@@ -572,6 +812,7 @@ document.addEventListener('DOMContentLoaded', () => {
              const userName = userInput.value;
              // Code is optional
              const code = codeInput ? codeInput.value.trim() : '';
+             const category = categoryInput ? categoryInput.value : '';
 
              if (!name || !duration || !goal) {
                  showAlert('모든 필드를 입력해주세요.');
@@ -584,6 +825,7 @@ document.addEventListener('DOMContentLoaded', () => {
                  goal,
                  userName,
                  code,
+                 category,
                  createdAt: new Date().toISOString()
              };
 
@@ -601,6 +843,7 @@ document.addEventListener('DOMContentLoaded', () => {
              durationInput.value = '';
              goalInput.value = '';
              if(codeInput) codeInput.value = '';
+             if(categoryInput) categoryInput.value = '';
              
              
              if (challengeModal) challengeModal.classList.add('hidden');
@@ -632,7 +875,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lastActiveModal = ongoingModal; 
             
             
-            updateDetailView(challenge.userName, challenge.duration, challenge.goal);
+            updateDetailView(challenge);
             
             
             if (detailView) detailView.classList.remove('hidden');

@@ -672,9 +672,25 @@
                 <label>내 이름</label>
                 <input type="text" id="new-challenge-user" placeholder="예: 김예선">
             </div>
-            <div class="form-group">
-                <label>기간 (일)</label>
-                <input type="number" id="new-challenge-duration" placeholder="30">
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>기간 (일)</label>
+                    <input type="number" id="new-challenge-duration" placeholder="예: 30">
+                </div>
+                <div class="form-group half">
+                    <label>카테고리</label>
+                    <div class="select-wrapper">
+                        <select id="new-challenge-category">
+                            <option value="" disabled selected>예: 공부</option>
+                            <option value="study">공부</option>
+                            <option value="exercise">운동</option>
+                            <option value="daily">일상</option>
+                        </select>
+                        <div class="select-arrow">
+                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label>목표</label>
@@ -698,9 +714,25 @@
                 <label>내 이름</label>
                 <input type="text" id="edit-challenge-user" placeholder="예: 김예선">
             </div>
-            <div class="form-group">
-                <label>기간 (일)</label>
-                <input type="number" id="edit-challenge-duration" placeholder="30">
+            <div class="form-row">
+                <div class="form-group half">
+                    <label>기간 (일)</label>
+                    <input type="number" id="edit-challenge-duration" placeholder="30">
+                </div>
+                <div class="form-group half">
+                    <label>카테고리</label>
+                    <div class="select-wrapper">
+                        <select id="edit-challenge-category">
+                            <option value="" disabled selected>예: 공부</option>
+                            <option value="study">공부</option>
+                            <option value="exercise">운동</option>
+                            <option value="daily">일상</option>
+                        </select>
+                        <div class="select-arrow">
+                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <label>목표</label>

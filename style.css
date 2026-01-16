@@ -1590,3 +1590,135 @@ body {
 .att-card.checked span {
     display: none;
 }
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-group.half {
+    width: 50%;
+    margin-bottom: 0px; 
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1.5px solid #145f5c;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: #555;
+    outline: none;
+    transition: all 0.3s ease;
+    appearance: none; /* Remove default arrow */
+    background-color: white;
+    cursor: pointer;
+}
+
+.select-wrapper select:focus {
+    border-color: #0d4644;
+    box-shadow: 0 0 0 3px rgba(20, 95, 92, 0.1);
+}
+
+.select-arrow {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #555;
+}
+
+.select-wrapper select:required:invalid {
+  color: #999;
+}
+.select-wrapper select option {
+  color: #222;
+}
+.select-wrapper select option[value=""][disabled] {
+  display: none;
+}
+
+/* Timer Styles */
+.timer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.timer-display {
+    font-size: 64px;
+    font-weight: 700;
+    font-family: 'Instrument Sans', sans-serif;
+    color: #000;
+    letter-spacing: 2px;
+}
+
+.timer-btn {
+    width: 250px;
+    height: 48px;
+    background-color: #0d6b63;
+    border: none;
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.timer-btn:hover {
+    background-color: #09524c;
+}
+
+.timer-btn svg {
+    fill: white;
+}
+
+/* Updated Member List Styles for Study/Exercise */
+.member-item-status-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.member-info-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.member-status-text {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.member-status-text.success { color: #0d6b63; }
+.member-status-text.danger { color: #d32f2f; }
+.member-status-text.warning { color: #f57c00; }
+
+/* Submit Button in Goal Card */
+.submit-btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #0d6b63; /* Use the green theme color */
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.submit-btn:hover {
+    opacity: 0.9;
+}
+
