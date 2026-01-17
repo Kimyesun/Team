@@ -1028,11 +1028,95 @@ document.addEventListener('DOMContentLoaded', () => {
     if (completeBtn && challengeOverModal) {
         completeBtn.addEventListener('click', () => {
             challengeOverModal.classList.remove('hidden');
+
+            const scoreView = document.getElementById('challenge-over-score-view');
+            const rankingView = document.getElementById('challenge-over-ranking-view');
+            
+            // Check if category is 'study'
+            const isStudy = currentDetailChallengeData && (currentDetailChallengeData.category === 'study');
+
+            if (isStudy) {
+                // Show Score Input View
+                if (scoreView) scoreView.classList.remove('hidden');
+                if (rankingView) rankingView.classList.add('hidden');
+                
+                // Clear input
+                const input = document.getElementById('challenge-score-input');
+                if (input) input.value = '';
+            } else {
+                // Not study (e.g., exercise) - Skip score input, show ranking directly
+                // We'll simulate a score or just show ranking logic immediately
+                showRankingView(0); // Pass 0 or default score
+            }
         });
 
+        // Helper function to render ranking
+        const showRankingView = (userScore) => {
+             const scoreView = document.getElementById('challenge-over-score-view');
+             const rankingView = document.getElementById('challenge-over-ranking-view');
+             
+             // Simple simulated ranking data
+             const participants = [
+                 { name: '김예선', baseScore: 95 },
+                 { name: '김예선', baseScore: 88 },
+                 { name: '김예선', baseScore: 72 },
+                 { name: '김예선', baseScore: 50 }
+             ];
+
+             // Add current user
+             participants.push({ name: '김예선', score: userScore, isUser: true });
+
+            const rankingData = participants.map(p => {
+                if (p.isUser) return p;
+                return { name: p.name, score: p.baseScore };
+            });
+
+             // Sort by score descending
+             rankingData.sort((a, b) => b.score - a.score);
+
+             // Render Ranking View
+             const rankingListEl = rankingView.querySelector('.ranking-list');
+             if(rankingListEl) {
+                 rankingListEl.innerHTML = ''; // Clear previous
+
+                 rankingData.forEach((item, index) => {
+                     const rank = index + 1;
+                     const points = item.score * 10; // Dummy point calculation
+                     const isUserClass = item.isUser ? 'user-rank-item' : '';
+
+                     const html = `
+                         <div class="ranking-item ${isUserClass}">
+                             <span class="rank">${rank}</span>
+                             <span class="name">${item.name}</span>
+                             <div class="score-info">
+                                 <div class="score-group">
+                                     <span class="label">포인트</span>
+                                     <span class="value">${points > 0 ? '+' + points : points}</span>
+                                 </div>
+                                 <div class="divider"></div>
+                                 <div class="score-group">
+                                     <span class="label">점수</span>
+                                     <span class="value">${item.score}</span>
+                                 </div>
+                             </div>
+                         </div>
+                     `;
+                     rankingListEl.insertAdjacentHTML('beforeend', html);
+                 });
+             }
+
+             // Switch Views
+             if(scoreView) scoreView.classList.add('hidden');
+             if(rankingView) rankingView.classList.remove('hidden');
+        };
+
+        // Add handler for Confirm Score button
+        // const confirmScoreBtn defined later
+        
         const overlay = challengeOverModal.querySelector('.popup-overlay');
         const closeX = challengeOverModal.querySelector('.close-challenge-over-x');
         const closeWrapper = challengeOverModal.querySelector('.close-btn-wrapper');
+        const confirmScoreBtn = challengeOverModal.querySelector('.confirm-score-btn');
 
         const closeChallengeOverAndCleanup = () => {
             challengeOverModal.classList.add('hidden');
@@ -1070,6 +1154,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // Support clicking either the svg or the wrapper div
             const target = closeWrapper || closeX;
             target.addEventListener('click', closeChallengeOverAndCleanup);
+        }
+
+        if (confirmScoreBtn) {
+            confirmScoreBtn.addEventListener('click', () => {
+                // Get the user's score
+                const input = document.getElementById('challenge-score-input');
+                const userScore = parseInt(input.value) || 0;
+                
+                showRankingView(userScore);
+            });
         }
     }
 
