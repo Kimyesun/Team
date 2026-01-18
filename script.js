@@ -1,10 +1,20 @@
+// ==========================================
+// DOM 로드 완료 후 모든 초기화 및 이벤트 리스너 실행
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     
+    // ==========================================
+    // 커스텀 알림 모달 설정
+    // ==========================================
     const alertModal = document.getElementById('custom-alert-modal');
     const alertText = document.getElementById('custom-alert-text');
     const alertCloseBtn = document.getElementById('custom-alert-close');
     const alertOverlay = alertModal ? alertModal.querySelector('.popup-overlay') : null;
 
+    /**
+     * 사용자에게 알림 메시지를 표시하는 함수
+     * @param {string} message - 표시할 메시지 내용
+     */
     function showAlert(message) {
         if (alertModal && alertText) {
             alertText.textContent = message;
@@ -14,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 알림 모달 닫기 버튼 이벤트
     if (alertCloseBtn) {
         alertCloseBtn.addEventListener('click', () => {
             alertModal.classList.add('hidden');
@@ -26,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ==========================================
+    // 타이핑 효과를 위한 Intersection Observer 설정
+    // 화면에 요소가 보일 때 글자가 하나씩 타이핑되는 효과
+    // ==========================================
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -55,10 +70,17 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(challenge);
     }
 
+    // ==========================================
+    // 상점 아이템 캐러셀 슬라이더 기능
+    // ==========================================
     const shopWrapper = document.querySelector('.shop-items-wrapper');
     const shopPrev = document.querySelector('.shop-nav.prev');
     const shopNext = document.querySelector('.shop-nav.next');
 
+    /**
+     * 상점 아이템들의 크기를 업데이트하는 함수
+     * 가운데 아이템은 active, 양 옆은 medium, 그 외는 small
+     */
     function updateShopClasses() {
         const items = shopWrapper.querySelectorAll('.shop-item');
         items.forEach((item, index) => {
@@ -75,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 상점 슬라이더 이전/다음 버튼 이벤트
     if (shopWrapper && shopPrev && shopNext) {
         shopPrev.addEventListener('click', () => {
             const items = shopWrapper.querySelectorAll('.shop-item');
@@ -93,7 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // ==========================================
+    // 챌린지 모달 열기/닫기 기능
+    // ==========================================
     const challengeLink = document.getElementById('challenge-link');
     const challengeModal = document.getElementById('challenge-modal');
 
@@ -120,7 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // ==========================================
+    // 진행중인 챌린지 모달과 전체 챌린지 모달 간 전환
+    // ==========================================
     const ongoingModal = document.getElementById('ongoing-challenge-modal');
     const goToOngoingLink = document.getElementById('go-to-ongoing-challenges');
     const backToAllLink = document.getElementById('back-to-all-challenges');
@@ -141,12 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // ==========================================
+    // 챌린지 상세보기 모달 관련 변수 및 기능
+    // ==========================================
     const detailButtons = document.querySelectorAll('.detail-btn');
     const detailView = document.getElementById('challenge-detail-view');
     let lastActiveModal = null;
 
-    
+    // 원본 HTML 저장 (초기화를 위한 변수들)
     let originalMembers = '';
     let originalProgress = '';
     // Status grid might be removed in special layout, but we keep original string if needed
@@ -156,19 +185,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const memberList = detailView ? detailView.querySelector('.member-list') : null;
     if (memberList) originalMembers = memberList.innerHTML;
 
-    // The resetDetailView is now defined above to handle full layout reset
-
-
-    
+    // 현재 선택된 챌린지 카드와 데이터
     let currentDetailCard = null;
     let currentDetailChallengeData = null;
-    let timerInterval = null; // Timer interval variable
+    let timerInterval = null;
 
-    // Capture original state of the whole detail main area to support full layout changes
+    // 원본 레이아웃을 복원하기 위해 전체 HTML 저장
     const detailMain = detailView ? detailView.querySelector('.detail-main') : null;
     let originalDetailMain = '';
     if (detailMain) originalDetailMain = detailMain.innerHTML;
 
+    /**
+     * 상세보기 화면을 초기 상태로 복원하는 함수
+     * 타이머 중지, 멤버 리스트 복원, 레이아웃 복원
+     */
     function resetDetailView() {
         if (timerInterval) clearInterval(timerInterval); // Stop any running timer
         if (memberList) memberList.innerHTML = originalMembers;
@@ -186,14 +216,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * 챌린지 데이터를 바탕으로 상세보기 화면을 업데이트하는 함수
+     * 카테고리에 따라 다른 레이아웃을 표시 (study/exercise는 특수 레이아웃)
+     * @param {Object} challengeData - 챌린지 데이터 객체
+     */
     function updateDetailView(challengeData) {
         const { userName, duration, goal, category } = challengeData;
         const isSpecialCategory = category === 'study' || category === 'exercise';
 
         if (isSpecialCategory) {
-            // --- Special Layout for Study/Exercise ---
+            // ==========================================
+            // 특수 레이아웃 (study/exercise): 진행도, 목표, 타이머 표시
+            // ==========================================
             
-            // 1. Sidebar (Member List with Status)
+            // 1. 사이드바: 멤버 리스트에 인증 상태 표시
             if (memberList) {
                 // Mock data for demonstration
                 const members = [
@@ -216,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `).join('');
             }
 
-            // 2. Main Area (Progress, Goal with Button, Timer)
+            // 2. 메인 영역: 진행도, 목표 카드, 타이머 표시
             if (detailMain) {
                 // Keep the close button at top
                 const closeBtnHTML = `
@@ -227,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                 </button>`;
 
+                // 진행도 카드 HTML
                 const progressCardHTML = `
                 <div class="detail-card">
                     <h3>챌린지 진행도</h3>
@@ -242,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>`;
 
+                // 목표 카드 HTML (제출버튼 포함)
                 const goalCardHTML = `
                 <div class="detail-card">
                     <h3>챌린지 목표</h3>
@@ -249,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="submit-btn">제출하기</button>
                 </div>`;
 
+                // 타이머 카드 HTML
                 const timerCardHTML = `
                 <div class="detail-card">
                     <h3>타이머</h3>
@@ -278,9 +318,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         } else {
-            // --- Default Layout (Daily, etc.) ---
+            // ==========================================
+            // 기본 레이아웃 (daily 등): 간단한 멤버 리스트와 참여 현황
+            // ==========================================
             
-            // 1. Sidebar (Simple Member List)
+            // 1. 사이드바: 간단한 멤버 리스트
             if (memberList) {
                 memberList.innerHTML = `
                 <div class="member-item">
@@ -333,6 +375,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
+    /**
+     * 상세보기 화면의 버튼들(닫기, 포기, 완료, 제출)에 이벤트를 바인딩하는 함수
+     */
     function bindDetailActions() {
         // Close Button
         const closeBtn = detailMain.querySelector('.close-detail-btn');
@@ -370,6 +415,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * 타이머 기능을 초기화하는 함수
+     * 재생/일시정지 기능과 시간 표시
+     */
     function initTimer() {
         const display = document.getElementById('timer-val');
         const btn = document.getElementById('timer-toggle-btn');
@@ -476,7 +525,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // ==========================================
+    // 로고 클릭 시 메인 페이지로 돌아가기
+    // ==========================================
     const logo = document.querySelector('.logo');
     const attendanceSection = document.querySelector('.attendance-section');
     
@@ -507,7 +558,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Attendance Check Logic
+    // ==========================================
+    // 출석체크 페이지 열기
+    // ==========================================
     const attendanceLink = document.getElementById('attendance-link');
     if (attendanceLink && attendanceSection) {
         attendanceLink.addEventListener('click', (e) => {
@@ -555,7 +608,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // ==========================================
+    // 새 챌린지 생성 모달 열기/닫기
+    // ==========================================
     const createChallengeBtns = document.querySelectorAll('.create-challenge-btn');
     const createChallengeModal = document.getElementById('create-challenge-modal');
     const createModalOverlay = createChallengeModal ? createChallengeModal.querySelector('.popup-overlay') : null;
@@ -575,7 +630,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // ==========================================
+    // 챌린지 수정 모달 및 기능
+    // ==========================================
     const editChallengeModal = document.getElementById('edit-challenge-modal');
     const editModalOverlay = editChallengeModal ? editChallengeModal.querySelector('.popup-overlay') : null;
     const updateChallengeBtn = editChallengeModal ? editChallengeModal.querySelector('.update-challenge-btn') : null;
@@ -587,6 +644,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const editGoalInput = document.getElementById('edit-challenge-goal');
     const editCodeInput = document.getElementById('edit-challenge-code');
 
+    // 현재 수정 중인 챌린지 카드와 데이터
     let currentEditingCard = null;
     let currentEditingChallenge = null;
 
@@ -596,6 +654,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /**
+     * 챌린지 수정 모달을 여는 함수
+     * @param {HTMLElement} card - 수정할 챌린지 카드 요소
+     * @param {Object} challengeData - 챌린지 데이터 객체 (선택사항)
+     */
     function openEditModal(card, challengeData = null) {
         currentEditingCard = card;
         currentEditingChallenge = challengeData;
@@ -666,6 +729,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /**
+     * 챌린지 카드의 DOM을 업데이트하는 함수
+     * @param {HTMLElement} card - 업데이트할 카드 요소
+     * @param {string} name - 챌린지 이름
+     * @param {number} duration - 기간(일)
+     * @param {string} goal - 목표
+     * @param {Date} startDate - 시작일
+     * @param {string} category - 카테고리
+     */
     function updateCardDOM(card, name, duration, goal, startDate, category) {
          if (!card) return;
          
@@ -708,13 +780,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    
+    // ==========================================
+    // 로컬스토리지를 이용한 챌린지 데이터 관리
+    // ==========================================
     let createdChallenges = JSON.parse(localStorage.getItem('createdChallenges')) || [];
 
+    /**
+     * 챌린지 데이터를 로컬스토리지에 저장하는 함수
+     */
     function saveChallenges() {
         localStorage.setItem('createdChallenges', JSON.stringify(createdChallenges));
     }
 
+    /**
+     * 챌린지 데이터를 바탕으로 챌린지 카드를 화면에 렌더링하는 함수
+     * @param {Object} challengeData - 렌더링할 챌린지 데이터
+     */
     function renderChallenge(challengeData) {
         const { name, duration, goal, userName, createdAt, category } = challengeData;
 
@@ -790,12 +871,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
+    // 로컬스토리지에 저장된 챌린지들을 화면에 렌더링
     createdChallenges.forEach(challenge => {
         renderChallenge(challenge);
     });
 
-    
+    // ==========================================
+    // 새 챌린지 시작하기 버튼 이벤트
+    // ==========================================
     const startChallengeBtn = document.querySelector('.start-challenge-btn');
     if (startChallengeBtn) {
         startChallengeBtn.addEventListener('click', () => {
@@ -851,7 +934,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    /**
+     * 코드를 입력하여 챌린지에 참여하는 함수
+     * @param {string} inputSelector - 입력 필드의 CSS 선택자
+     */
     function joinChallengeByCode(inputSelector) {
         const input = document.querySelector(inputSelector);
         if (!input) return;
@@ -887,7 +973,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
+    // ==========================================
+    // 챌린지 코드 입력 기능 (전체 모달과 진행중 모달에서 모두 사용)
+    // ==========================================
     const allCodeBtn = document.getElementById('all-challenge-code-btn');
     const allCodeInput = document.getElementById('all-challenge-code-input');
     
@@ -912,14 +1000,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
+    // ==========================================
+    // 챌린지 포기 모달 기능 (1단계 확인 모달)
+    // ==========================================
     const giveUpBtn = document.querySelector('.btn-giveup');
     const giveUpModal = document.getElementById('give-up-modal');
     const giveUpCancelBtn = giveUpModal ? giveUpModal.querySelector('.cancel') : null;
     const giveUpConfirmBtn = giveUpModal ? giveUpModal.querySelector('.giveup') : null;
     const giveUpOverlay = giveUpModal ? giveUpModal.querySelector('.popup-overlay') : null;
 
-    
+    // 2단계 최종 포기 확인 모달 (명언과 함께 표시)
     const finalGiveUpModal = document.getElementById('final-give-up-modal');
     const finalGiveUpCancelBtn = finalGiveUpModal ? finalGiveUpModal.querySelector('.cancel') : null;
     const finalGiveUpConfirmBtn = finalGiveUpModal ? finalGiveUpModal.querySelector('.real-giveup') : null;
@@ -1018,7 +1108,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Challenge Over Modal Logic
+    // ==========================================
+    // 챌린지 완료 모달 기능 (점수 입력 및 순위 표시)
+    // ==========================================
     const completeBtn = document.querySelector('.btn-complete');
     const challengeOverModal = document.getElementById('challenge-over-modal');
 
@@ -1050,7 +1142,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Helper function to render ranking
+        /**
+         * 최종 순위를 표시하는 함수
+         * @param {number} userScore - 사용자가 입력한 점수
+         */
         const showRankingView = (userScore) => {
              const scoreView = document.getElementById('challenge-over-score-view');
              const rankingView = document.getElementById('challenge-over-ranking-view');
@@ -1167,12 +1262,126 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Attendance Card Click Effect
+    // ==========================================
+    // 출석체크 카드 클릭 효과 (하루에 한 번만 가능, 자정 이후 가능)
+    // ==========================================
     const attCards = document.querySelectorAll('.att-card');
-    attCards.forEach(card => {
+    
+    // 오늘 날짜를 YYYY-MM-DD 형식으로 가져오기
+    const getTodayDate = () => {
+        const today = new Date();
+        return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    };
+    
+    // 자정까지 남은 시간 계산
+    const getTimeUntilMidnight = () => {
+        const now = new Date();
+        const midnight = new Date(now);
+        midnight.setHours(24, 0, 0, 0);
+        const diff = midnight - now;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        return `${hours}시간 ${minutes}분`;
+    };
+    
+    // 마지막 출석 날짜 가져오기
+    let lastAttendanceDate = localStorage.getItem('lastAttendanceDate');
+    const todayDate = getTodayDate();
+    const alreadyCheckedToday = lastAttendanceDate === todayDate;
+    
+    // 연속 출석 일수 가져오기
+    let attendanceCount = parseInt(localStorage.getItem('attendanceCount')) || 0;
+    
+    // 체크된 카드들의 인덱스 배열 가져오기
+    let checkedCardIndices = JSON.parse(localStorage.getItem('checkedCardIndices')) || [];
+    
+    // 날짜가 바뀌었다면 연속 출석 체크
+    if (lastAttendanceDate && lastAttendanceDate !== todayDate) {
+        const lastDate = new Date(lastAttendanceDate);
+        const today = new Date(todayDate);
+        const diffTime = today - lastDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        
+        // 하루 이상 지났으면 연속 출석이 끊김
+        if (diffDays > 1) {
+            attendanceCount = 0;
+            checkedCardIndices = [];
+            localStorage.setItem('attendanceCount', '0');
+            localStorage.setItem('checkedCardIndices', JSON.stringify([]));
+        }
+    }
+    
+    // 페이지 로드 시 이전에 체크한 카드들 표시
+    checkedCardIndices.forEach(index => {
+        if (attCards[index]) {
+            attCards[index].classList.add('checked');
+        }
+    });
+    
+    // 연속 출석 카운터 업데이트 함수
+    const updateAttendanceCount = (count) => {
+        const countElement = document.getElementById('attendance-count');
+        if (countElement) {
+            countElement.textContent = count;
+        }
+    };
+    
+    // 페이지 로드 시 연속 출석 일수 표시
+    updateAttendanceCount(attendanceCount);
+    
+    attCards.forEach((card, index) => {
         card.addEventListener('click', () => {
-            // Toggle check status
-            card.classList.toggle('checked');
+            // 오늘 이미 출석했는지 확인
+            if (alreadyCheckedToday) {
+                const timeLeft = getTimeUntilMidnight();
+                showAlert(`오늘은 이미 출석체크를 완료했습니다!\n다음 출석까지 ${timeLeft} 남았습니다 `);
+                return;
+            }
+            
+            // 이미 체크된 카드는 다시 클릭할 수 없음
+            if (card.classList.contains('checked')) {
+                showAlert('이미 체크된 카드입니다!');
+                return;
+            }
+            
+            // 출석 완료 처리
+            card.classList.add('checked');
+            
+            // 출석 일수 증가
+            attendanceCount++;
+            
+            // 체크된 카드 인덱스 저장
+            checkedCardIndices.push(index);
+            
+            // 7일이 지나면 첫 번째 카드부터 다시 시작
+            if (checkedCardIndices.length > 7) {
+                const oldestIndex = checkedCardIndices.shift();
+                if (attCards[oldestIndex]) {
+                    attCards[oldestIndex].classList.remove('checked');
+                }
+            }
+            
+            // 로컬스토리지에 저장
+            localStorage.setItem('lastAttendanceDate', todayDate);
+            localStorage.setItem('attendanceCount', attendanceCount.toString());
+            localStorage.setItem('checkedCardIndices', JSON.stringify(checkedCardIndices));
+            
+            // 포인트 정보 가져오기
+            const pointElement = card.querySelector('.point');
+            if (pointElement) {
+                const points = pointElement.textContent;
+                showAlert(`출석 완료! ${points}를 획득했습니다! 🎉\n연속 출석: ${attendanceCount}일`);
+            }
+            
+            // 연속 출석 카운터 화면에 업데이트
+            updateAttendanceCount(attendanceCount);
+            
+            // 7일 연속 출석 달성 시
+            if (attendanceCount % 7 === 0 && attendanceCount > 0) {
+                setTimeout(() => {
+                    showAlert('🎊 7일 연속 출석 달성! 보너스 400P를 획득했습니다!');
+                }, 500);
+            }
         });
     });
 });

@@ -7,11 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- 전체 페이지를 감싸는 컨테이너 -->
     <div class="wrap">
+        <!-- 상단 헤더 영역: 로고, 네비게이션 메뉴, 로그인 링크 -->
         <div class="header">
+            <!-- 로고 이미지 영역 (클릭 시 메인 페이지로 이동) -->
             <div class="logo">
                 <img src="img/logo.png" alt="Stufit Logo">
             </div>
+            <!-- 메인 네비게이션 메뉴: 출석체크, 챌린지, 랭킹 등 -->
             <div class="nav">
                 <a href="#" id="attendance-link">출석체크</a>
                 <a href="#" id="challenge-link">챌린지</a>
@@ -19,14 +23,17 @@
                 <a href="#">커뮤니티</a>
                 <a href="#">상점</a>
             </div>
+            <!-- 사용자 인증 영역: 로그인 및 회원가입 링크 -->
             <div class="auth">
                 <a href="#">로그인</a> | <a href="#">회원가입</a>
             </div>
         </div>
+        <!-- 메인 히어로 섹션: 서비스 소개 및 슬로건 표시 -->
         <div class="main">
             <h1>게임처럼 경쟁하고 보상을 얻으며<br>꾸준히 자기개발</h1>
             <p>학습 커뮤니티에서 공부 이야기를 나누고, 함께 챌린지에<br>도전해 목표를 완주해 보세요.</p>
         </div>
+        <!-- 출석체크 섹션: 7일 연속 출석 시 포인트 지급 -->
         <div class="attendance-section hidden">
             <div class="attendance-header">
                 <h1>출석체크</h1>
@@ -34,6 +41,7 @@
             </div>
             <div class="attendance-container">
                 <div class="attendance-board">
+                    <!-- 일주일 요일 표시 (일요일부터 토요일까지) -->
                     <div class="attendance-days">
                         <span>SUN</span>
                         <span>MON</span>
@@ -43,6 +51,7 @@
                         <span>FRI</span>
                         <span>SAT</span>
                     </div>
+                    <!-- 각 요일별 출석체크 카드 (일일 포인트 표시) -->
                     <div class="attendance-cards">
                         <div class="att-card">
                             <span class="label">일일 포인트</span>
@@ -74,11 +83,13 @@
                         </div>
                     </div>
                 </div>
+                <!-- 연속 출석 일수 표시 -->
                 <div class="attendance-footer">
-                    총 연속 출석체크일 수 : 12일
+                    총 연속 출석체크일 수 : <span id="attendance-count">0</span>일
                 </div>
             </div>
         </div>
+        <!-- 챌린지 바로가기 섹션: 챌린지 페이지로 이동하는 배너 -->
         <div class="challenge-quicklink">
             <div class="challenge-quicklink-inner">
                 <div class="stufit-logo">STUFIT</div>
@@ -87,6 +98,7 @@
                 <button>바로가기</button>
             </div>
         </div>
+        <!-- 개인 랭킹 섹션: 상위 10명의 랭킹 표시 -->
         <div class="ranking-quicklink">
             <h2 class="ranking-quicklink-title">Personal<br>Ranking</h2>
             <div class="ranking-quicklink-container">
@@ -212,6 +224,7 @@
                 </div>
             </div>
         </div>
+        <!-- 아이템 상점 섹션: 포인트로 구매 가능한 아이템 표시 -->
         <div class="shop-quicklink">
             <div class="shop-header">
                 <h2>Item Shop</h2>
@@ -225,7 +238,7 @@
                         <path d="M12 8l4 4-4 4M8 12h8"></path>
                     </svg>
                 </a>
-                
+                <!-- 아이템 슬라이더 컨테이너 (좌우 버튼으로 탐색 가능) -->
                 <div class="shop-slider-container">
                     <button class="shop-nav prev">
                         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -275,6 +288,7 @@
                 </div>
             </div>
         </div>
+        <!-- 최신 커뮤니티 게시글 섹션: 인기글 및 최신 게시물 표시 -->
                 <div class="community-quicklink">
             <div class="community-header">
                 <div class="header-titles">
@@ -287,7 +301,7 @@
                 <div class="community-nav-row">
                     <a href="#" class="community-more">바로가기 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
                 </div>
-
+                <!-- 커뮤니티 게시글 카드 그리드 (Q&A, TIP, 자료공유 등) -->
                 <div class="community-cards-wrapper">
                     <div class="comm-card">
                         <div class="comm-tag-row">
@@ -361,6 +375,7 @@
                 </div>
             </div>
         </div>
+        <!-- 푸터 영역: 이용약관, 고객센터, SNS 링크 등 -->
         <div class="footer">
             <div class="footer-content">
                 <div class="footer-links">
@@ -392,6 +407,7 @@
             </div>
         </div>
     </div>
+    <!-- 전체 챌린지 모달: 모든 챌린지 목록 표시 -->
     <div id="challenge-modal" class="modal hidden">
         <div class="modal-content">
             <div class="ongoing-challenge-link">
@@ -420,6 +436,7 @@
             </div>
         </div>
     </div>
+    <!-- 진행중인 챌린지 모달: 사용자가 참여 중인 챌린지만 표시 -->
     <div id="ongoing-challenge-modal" class="modal hidden">
         <div class="modal-content">
             <div class="ongoing-challenge-link">
@@ -448,6 +465,7 @@
             </div>
         </div>
     </div>
+    <!-- 챌린지 상세보기 모달: 진행도, 목표, 참여현황 표시 -->
     <div id="challenge-detail-view" class="modal hidden">
         <div class="detail-view-container">
             
@@ -580,6 +598,7 @@
             </div>
         </div>
     </div>
+    <!-- 새로운 챌린지 생성 모달: 이름, 기간, 목표 등 입력 -->
     <div id="create-challenge-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content">
@@ -622,6 +641,7 @@
             <button class="start-challenge-btn">챌린지 시작하기</button>
         </div>
     </div>
+    <!-- 챌린지 수정 모달: 기존 챌린지 정보 수정 -->
     <div id="edit-challenge-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content">
@@ -664,6 +684,7 @@
             <button class="update-challenge-btn start-challenge-btn">수정 완료하기</button>
         </div>
     </div>
+    <!-- 챌린지 포기 확인 모달 (1단계): 포기 여부 확인 -->
     <div id="give-up-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content confirm-modal-content">
@@ -678,6 +699,7 @@
             </div>
         </div>
     </div>
+    <!-- 챌린지 최종 포기 확인 모달 (2단계): 명언과 함께 최종 확인 -->
     <div id="final-give-up-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content confirm-modal-content">
@@ -692,6 +714,7 @@
             </div>
         </div>
     </div>
+    <!-- 커스텀 알림 모달: 일반적인 알림 메시지 표시 -->
     <div id="custom-alert-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content" style="width: 400px; text-align: center; padding: 40px;">
@@ -699,6 +722,7 @@
             <button id="custom-alert-close" class="start-challenge-btn" style="width: 120px; margin: 0 auto; padding: 12px;">확인</button>
         </div>
     </div>
+    <!-- 챌린지 완료 모달: 최종 점수 입력 및 순위 표시 -->
     <div id="challenge-over-modal" class="popup-modal hidden">
         <div class="popup-overlay"></div>
         <div class="popup-content challenge-over-content">
