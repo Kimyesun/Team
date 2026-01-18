@@ -1190,6 +1190,10 @@ body {
     align-items: center;
 }
 
+#custom-alert-modal {
+    z-index: 3000;
+}
+
 .popup-modal.hidden {
     display: none;
 }
@@ -2444,7 +2448,7 @@ body {
     padding: 15px 0 15px 20px;
     cursor: pointer;
     color: white;
-    margin-bottom: 10px;
+    margin-bottom: 35px;
     transition: all 0.2s;
     position: relative;
     font-weight: 500;
@@ -2484,19 +2488,59 @@ body {
 }
 
 /* 피드 */
-.community-feed {
+.community-board-container {
     display: flex;
-    flex-direction: column;
+    border: 1px solid #B7B7B7;
+    border-radius: 16px;
+    padding: 30px;
+    background: white;
     gap: 30px;
 }
 
+.community-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.community-board-sidebar {
+    width: 200px;
+    border-left: 1px solid #B7B7B7;
+    padding-left: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-new-post {
+    background-color: #0d655d;
+    color: white;
+    border: none;
+    padding: 10px 0;
+    width: 100%;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+}
+
+.btn-new-post:hover {
+    background-color: #0a524b;
+}
+
 .feed-card {
-    border: 1px solid #B7B7B7; /* Default grey border */
+    border: 3px solid #B7B7B7;
     border-radius: 16px;
     padding: 30px;
     background: white;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     position: relative;
+}
+
+.feed-card:first-child {
+    border: 3px solid #90D1CA;
 }
 
 .feed-header {

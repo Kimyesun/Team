@@ -1536,7 +1536,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // New Post Modal (Notice Board)
     // ==========================================
-    const newPostBtn = document.querySelector('.new-post-btn');
+    const newPostBtn = document.querySelector('.btn-new-post');
     const newPostModal = document.getElementById('new-post-modal');
     
     if (newPostBtn && newPostModal) {
@@ -1776,7 +1776,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (content.highlightFirst) {
                 const firstCard = communityFeed.querySelector('.feed-card:first-child');
                 if (firstCard) {
-                    firstCard.style.border = '2px solid #90D1CA';
+                    firstCard.style.border = '3px solid #90D1CA';
                 }
             }
         });
