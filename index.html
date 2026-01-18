@@ -7,27 +7,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- 상단 헤더 영역: 로고, 네비게이션 메뉴, 로그인 링크 -->
+    <div class="header">
+        <!-- 로고 이미지 영역 (클릭 시 메인 페이지로 이동) -->
+        <div class="logo">
+            <img src="img/logo.png" alt="Stufit Logo">
+        </div>
+        <!-- 메인 네비게이션 메뉴: 출석체크, 챌린지, 랭킹 등 -->
+        <div class="nav">
+            <a href="#" id="attendance-link">출석체크</a>
+            <a href="#" id="challenge-link">챌린지</a>
+            <a href="#" id="ranking-link">랭킹</a>
+            <a href="#" id="community-link">커뮤니티</a>
+            <a href="#">상점</a>
+        </div>
+        <!-- 사용자 인증 영역: 로그인 및 회원가입 링크 -->
+        <div class="auth">
+            <a href="#" id="login-link">로그인</a> | <a href="#" id="signup-link">회원가입</a>
+        </div>
+    </div>
+
     <!-- 전체 페이지를 감싸는 컨테이너 -->
     <div class="wrap">
-        <!-- 상단 헤더 영역: 로고, 네비게이션 메뉴, 로그인 링크 -->
-        <div class="header">
-            <!-- 로고 이미지 영역 (클릭 시 메인 페이지로 이동) -->
-            <div class="logo">
-                <img src="img/logo.png" alt="Stufit Logo">
-            </div>
-            <!-- 메인 네비게이션 메뉴: 출석체크, 챌린지, 랭킹 등 -->
-            <div class="nav">
-                <a href="#" id="attendance-link">출석체크</a>
-                <a href="#" id="challenge-link">챌린지</a>
-                <a href="#">랭킹</a>
-                <a href="#">커뮤니티</a>
-                <a href="#">상점</a>
-            </div>
-            <!-- 사용자 인증 영역: 로그인 및 회원가입 링크 -->
-            <div class="auth">
-                <a href="#">로그인</a> | <a href="#">회원가입</a>
-            </div>
-        </div>
         <!-- 메인 히어로 섹션: 서비스 소개 및 슬로건 표시 -->
         <div class="main">
             <h1>게임처럼 경쟁하고 보상을 얻으며<br>꾸준히 자기개발</h1>
@@ -375,38 +376,447 @@
                 </div>
             </div>
         </div>
-        <!-- 푸터 영역: 이용약관, 고객센터, SNS 링크 등 -->
-        <div class="footer">
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="#">이용약관</a>
-                    <a href="#" class="bold">개인정보</a>
-                    <a href="#">처리방침</a>
-                    <a href="#" class="bold">고객센터</a>
-                    <a href="#">문의하기</a>
-                    <a href="#">광고 상품 안내</a>
-                </div>
-                <div class="footer-info">
-                    근명고등학교: 경기도 안양시 만안구 삼덕로 49 : 평일 9시~18시(<a href="tel:1566-5192">1566-5192</a>)
-                </div>
+    </div>
+
+    <!-- 로그인 화면 섹션 (초기에는 숨김) -->
+    <div id="login-view" class="login-view hidden">
+        <div class="login-container-view">
+            <div class="input-group">
+                <label for="login-id-view">아이디</label>
+                <input type="text" id="login-id-view" placeholder="아이디를 입력해주세요.">
             </div>
-            <div class="footer-social">
-                <a href="#" class="social-icon talk">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="none">
-                        <path d="M12 2C6.48 2 2 5.58 2 10c0 2.42 1.45 4.56 3.69 6l-.68 3.5c-.09.43.34.78.74.58l3.6-1.8C10.23 18.25 11.11 18.29 12 18.29c5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
-                        <text x="12" y="11.5" font-family="Arial" font-size="6" fill="#666" text-anchor="middle" font-weight="bold">TALK</text>
-                    </svg>
-                </a>
-                <a href="#" class="social-icon insta">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                </a>
+            <div class="input-group">
+                <label for="login-pw-view">비밀번호</label>
+                <input type="password" id="login-pw-view" placeholder="비밀번호를 입력해주세요.">
+            </div>
+            <div class="button-group">
+                <button class="login-btn">로그인</button>
+                <button class="signup-btn">회원가입</button>
+            </div>
+            <div class="login-footer-links">
+                <a href="#">아이디 찾기</a>
+                <a href="#">비밀번호 찾기</a>
             </div>
         </div>
     </div>
+
+    <!-- 회원가입 화면 섹션 -->
+    <div id="signup-view" class="login-view hidden">
+        <div class="login-container-view">
+            <div class="input-group">
+                <label for="signup-id-view">아이디</label>
+                <input type="text" id="signup-id-view" placeholder="아이디를 입력해주세요.">
+            </div>
+            <div class="input-group">
+                <label for="signup-pw-view">비밀번호</label>
+                <input type="password" id="signup-pw-view" placeholder="비밀번호를 입력해주세요.">
+            </div>
+            <div class="input-group">
+                <label for="signup-pw-confirm-view">비밀번호 확인</label>
+                <input type="password" id="signup-pw-confirm-view" placeholder="비밀번호를 다시 입력해주세요.">
+            </div>
+            <div class="button-group">
+                <button class="login-btn">회원가입</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 랭킹 화면 섹션 -->
+    <div id="ranking-view" class="ranking-view hidden">
+        <div class="ranking-header-section">
+            <!-- 2등 -->
+            <div class="rank-card rank-2">
+                <div class="rank-icon-wrapper">
+                    <img src="img/2위.png" alt="2위" class="rank-img">
+                </div>
+                <div class="rank-user-name">박현서</div>
+                <div class="rank-user-label">점수</div>
+                <div class="rank-user-score">1,998</div>
+            </div>
+            <!-- 1등 -->
+            <div class="rank-card rank-1">
+                <div class="rank-icon-wrapper">
+                    <img src="img/1위.png" alt="1위" class="rank-img">
+                </div>
+                <div class="rank-user-name">김예선</div>
+                <div class="rank-user-label">점수</div>
+                <div class="rank-user-score">3,447</div>
+            </div>
+            <!-- 3등 -->
+            <div class="rank-card rank-3">
+                <div class="rank-icon-wrapper">
+                    <img src="img/3위.png" alt="3위" class="rank-img">
+                </div>
+                <div class="rank-user-name">유태민</div>
+                <div class="rank-user-label">점수</div>
+                <div class="rank-user-score">1,358</div>
+            </div>
+        </div>
+
+        <div class="ranking-list-container">
+            <div class="ranking-search-bar">
+                <input type="text" placeholder="Your name">
+                <button class="ranking-search-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
+            
+            <div class="ranking-grid-list">
+                <!-- 4등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">4</span> <span class="r-name">신유빈</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">985</span></div>
+                </div>
+                <!-- 5등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">5</span> <span class="r-name">송헌</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">965</span></div>
+                </div>
+                <!-- 6등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">6</span> <span class="r-name">최백령</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">948</span></div>
+                </div>
+                <!-- 7등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">7</span> <span class="r-name">박상진</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">937</span></div>
+                </div>
+                <!-- 8등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">8</span> <span class="r-name">김민성</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">929</span></div>
+                </div>
+                <!-- 9등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">9</span> <span class="r-name">정자연</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">918</span></div>
+                </div>
+                <!-- 10등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">10</span> <span class="r-name">김예선</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">908</span></div>
+                </div>
+                <!-- 11등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">11</span> <span class="r-name">유태민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">899</span></div>
+                </div>
+                <!-- 12등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">12</span> <span class="r-name">박현서</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">894</span></div>
+                </div>
+                <!-- 13등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">13</span> <span class="r-name">이정민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">889</span></div>
+                </div>
+                <!-- 14등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">14</span> <span class="r-name">신유빈</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">880</span></div>
+                </div>
+                <!-- 15등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">15</span> <span class="r-name">송헌</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">863</span></div>
+                </div>
+                <!-- 16등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">16</span> <span class="r-name">최백령</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">849</span></div>
+                </div>
+                <!-- 17등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">17</span> <span class="r-name">박상진</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">835</span></div>
+                </div>
+                <!-- 18등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">18</span> <span class="r-name">김민성</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">815</span></div>
+                </div>
+                <!-- 19등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">19</span> <span class="r-name">정자연</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">802</span></div>
+                </div>
+                <!-- 20등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">20</span> <span class="r-name">김예선</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">785</span></div>
+                </div>
+                <!-- 21등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">21</span> <span class="r-name">유태민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">774</span></div>
+                </div>
+                <!-- 22등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">22</span> <span class="r-name">박현서</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">767</span></div>
+                </div>
+                <!-- 23등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">23</span> <span class="r-name">이정민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">762</span></div>
+                </div>
+                <!-- 24등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">24</span> <span class="r-name">신유빈</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">753</span></div>
+                </div>
+                <!-- 25등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">25</span> <span class="r-name">송헌</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">742</span></div>
+                </div>
+                <!-- 26등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">26</span> <span class="r-name">최백령</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">734</span></div>
+                </div>
+                <!-- 27등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">27</span> <span class="r-name">박상진</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">725</span></div>
+                </div>
+                <!-- 28등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">28</span> <span class="r-name">김민성</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">715</span></div>
+                </div>
+                <!-- 29등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">29</span> <span class="r-name">정자연</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">695</span></div>
+                </div>
+                <!-- 30등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">30</span> <span class="r-name">김예선</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">679</span></div>
+                </div>
+                <!-- 31등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">31</span> <span class="r-name">유태민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">671</span></div>
+                </div>
+                <!-- 32등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">32</span> <span class="r-name">박현서</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">656</span></div>
+                </div>
+                <!-- 33등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">33</span> <span class="r-name">이정민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">638</span></div>
+                </div>
+                <!-- 34등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">34</span> <span class="r-name">신유빈</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">631</span></div>
+                </div>
+                <!-- 35등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">35</span> <span class="r-name">송헌</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">625</span></div>
+                </div>
+                <!-- 36등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">36</span> <span class="r-name">최백령</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">608</span></div>
+                </div>
+                <!-- 37등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">37</span> <span class="r-name">박상진</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">590</span></div>
+                </div>
+                <!-- 38등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">38</span> <span class="r-name">김민성</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">570</span></div>
+                </div>
+                <!-- 39등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">39</span> <span class="r-name">정자연</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">560</span></div>
+                </div>
+                <!-- 40등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">40</span> <span class="r-name">김예선</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">550</span></div>
+                </div>
+                <!-- 41등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">41</span> <span class="r-name">유태민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">533</span></div>
+                </div>
+                <!-- 42등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">42</span> <span class="r-name">박현서</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">526</span></div>
+                </div>
+                <!-- 43등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">43</span> <span class="r-name">이정민</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">511</span></div>
+                </div>
+                <!-- 44등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">44</span> <span class="r-name">신유빈</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">504</span></div>
+                </div>
+                <!-- 45등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">45</span> <span class="r-name">송헌</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">498</span></div>
+                </div>
+                <!-- 46등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">46</span> <span class="r-name">최백령</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">481</span></div>
+                </div>
+                <!-- 47등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">47</span> <span class="r-name">박상진</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">476</span></div>
+                </div>
+                <!-- 48등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">48</span> <span class="r-name">김민성</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">457</span></div>
+                </div>
+                <!-- 49등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">49</span> <span class="r-name">정자연</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">439</span></div>
+                </div>
+                <!-- 50등 -->
+                <div class="ranking-list-item">
+                    <div class="r-left"><span class="r-rank">50</span> <span class="r-name">김예선</span></div>
+                    <div class="r-right"><span class="r-label">점수</span> <span class="r-score">432</span></div>
+                </div>
+            </div>
+            <!-- Scrollbar track visual -->
+            <div class="custom-scroll-track"></div>
+        </div>
+    </div>
+
+    <!-- 커뮤니티 화면 섹션 -->
+    <div id="community-view" class="community-view hidden">
+        <div class="community-layout">
+            <!-- 사이드바 -->
+            <div class="community-sidebar">
+                <div class="sidebar-menu">
+                    <div class="menu-header">Jamawar Crowne Plaza</div>
+                    <div class="menu-item" id="menu-popular">Popular Posts</div>
+                    <div class="menu-item" id="menu-tips">Tips & How-To</div>
+                    <div class="menu-item active" id="menu-data">Data Sharing</div>
+                    <div class="menu-item" id="menu-mypost">My Post</div>
+                </div>
+            </div>
+
+            <!-- 메인 컨텐츠 -->
+            <div class="community-main">
+                <div class="community-title-section">
+                    <h2>Latest Community</h2>
+                    <p>다양한 질문과 정보를 나누며 커뮤니티를 즐겨보세요</p>
+                </div>
+                
+                <div class="community-feed">
+                    <div class="feed-card">
+                        <div class="feed-header">
+                            <div class="feed-user-info">
+                                <div class="feed-user-avatar"></div>
+                                <span class="feed-user-name">수학 고민러</span>
+                            </div>
+                            <div class="feed-meta">
+                                <span class="like-count">♡ 34</span>
+                                <span class="comment-count">💬 17</span>
+                            </div>
+                        </div>
+                        <div class="feed-content">
+                            <h3>미적분 문제 질문이요!</h3>
+                            <p>치환적분 문제인데 도와주세요</p>
+                        </div>
+                    </div>
+
+                    <div class="feed-card">
+                        <div class="feed-header">
+                            <div class="feed-user-info">
+                                <div class="feed-user-avatar"></div>
+                                <span class="feed-user-name">공부병아리</span>
+                            </div>
+                            <div class="feed-meta">
+                                <span class="like-count">♡ 10</span>
+                                <span class="comment-count">💬 15</span>
+                            </div>
+                        </div>
+                        <div class="feed-content">
+                            <h3>기말고사 계획 도와주세요</h3>
+                            <p>전교 1등이 기말고사 계획 도와주세요!</p>
+                        </div>
+                    </div>
+
+                    <div class="feed-card">
+                        <div class="feed-header">
+                            <div class="feed-user-info">
+                                <div class="feed-user-avatar"></div>
+                                <span class="feed-user-name">역사 덕후</span>
+                            </div>
+                            <div class="feed-meta">
+                                <span class="like-count">♡ 24</span>
+                                <span class="comment-count">💬 9</span>
+                            </div>
+                        </div>
+                        <div class="feed-content">
+                            <h3>한국사 정리 노트 공유</h3>
+                            <p>시대별로 정리한 한국사 노트 공유해요~</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 오른쪽 사이드바 (New Post 버튼) -->
+            <div class="community-right-sidebar">
+                <button class="new-post-btn">New Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 영역: 이용약관, 고객센터, SNS 링크 등 -->
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#">이용약관</a>
+                <a href="#" class="bold">개인정보</a>
+                <a href="#">처리방침</a>
+                <a href="#" class="bold">고객센터</a>
+                <a href="#">문의하기</a>
+                <a href="#">광고 상품 안내</a>
+            </div>
+            <div class="footer-info">
+                근명고등학교: 경기도 안양시 만안구 삼덕로 49 : 평일 9시~18시(<a href="tel:1566-5192">1566-5192</a>)
+            </div>
+        </div>
+        <div class="footer-social">
+            <a href="#" class="social-icon talk">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white" stroke="none">
+                    <path d="M12 2C6.48 2 2 5.58 2 10c0 2.42 1.45 4.56 3.69 6l-.68 3.5c-.09.43.34.78.74.58l3.6-1.8C10.23 18.25 11.11 18.29 12 18.29c5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+                    <text x="12" y="11.5" font-family="Arial" font-size="6" fill="#666" text-anchor="middle" font-weight="bold">TALK</text>
+                </svg>
+            </a>
+            <a href="#" class="social-icon insta">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+        </div>
+    </div>
+
     <!-- 전체 챌린지 모달: 모든 챌린지 목록 표시 -->
     <div id="challenge-modal" class="modal hidden">
         <div class="modal-content">
@@ -751,6 +1161,44 @@
             </div>
         </div>
     </div>
+
+    <!-- New Post Modal (Notice Board) -->
+    <div id="new-post-modal" class="popup-modal hidden">
+        <div class="popup-overlay w-full h-full bg-black bg-opacity-50 fixed top-0 left-0 z-50"></div>
+        <div class="popup-content notice-board-popup">
+            <h2 class="notice-board-title">notice board</h2>
+            
+            <div class="notice-form-group row">
+                <label>제목</label>
+                <input type="text" class="notice-input" placeholder="예: 제목 작성하기">
+            </div>
+            
+            <div class="notice-form-group row top-align">
+                <label>내용</label>
+                <textarea class="notice-textarea" placeholder="예: 내용을 입력하세요"></textarea>
+            </div>
+            
+            <button class="notice-submit-btn">글 작성하기</button>
+        </div>
+    </div>
+
+    <div id="community-reward-modal" class="popup-modal hidden">
+        <div class="popup-overlay reward-overlay"></div>
+        <div class="popup-content reward-popup">
+            <img src="img/logo.png" alt="Stufit" class="reward-logo-img">
+            <h2 class="reward-title">커뮤니티 인기글 보상 안내</h2>
+            <p class="reward-desc">
+                인기글에 선정되시면<br>
+                <span class="highlight">300포인트</span>를 지급해드려요!
+            </p>
+            <div class="reward-check-row">
+                <input type="checkbox" id="dont-show-reward">
+                <label for="dont-show-reward">오늘하루 그만보기</label>
+            </div>
+            <button class="reward-confirm-btn">확인</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

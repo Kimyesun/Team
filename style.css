@@ -17,11 +17,15 @@
 /* 전체 body 레이아웃 */
 body {
     width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .wrap {
     width: 100%;
     position: relative;
+    flex: 1; /* 메인 콘텐츠가 남은 공간을 차지하도록 설정 */
 }
 
 /* ==========================================
@@ -655,12 +659,12 @@ body {
 .footer-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 50px;
 }
 
 .footer-links {
     display: flex;
-    gap: 30px;
+    gap: 40px;
 }
 
 .footer-links a {
@@ -1968,4 +1972,824 @@ body {
 /* Make sure .hidden class is preserved at the end */
 .hidden {
     display: none !important;
+}
+
+/* ==========================================
+   로그인 모달 스타일
+   ========================================== */
+#login-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-modal.hidden {
+    display: none !important;
+}
+
+#login-modal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.login-container {
+    position: relative;
+    background: white;
+    padding: 50px 40px 60px;
+    border-radius: 5px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    width: 400px;
+    max-width: 90%;
+    z-index: 10000;
+    border: 1px solid #e0e0e0;
+}
+
+.login-container .input-group {
+    margin-bottom: 20px;
+}
+
+.login-container label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    color: #333;
+}
+
+.login-container input::placeholder {
+    color: #aaa;
+}
+
+.login-container input:focus {
+    border-color: #267D75;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.login-btn {
+    background-color: #096B68; 
+    color: white;
+    border: none;
+    padding: 13px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.signup-btn {
+    background-color: white;
+    color: #333;
+    border: 1px solid #096B68;
+    padding: 13px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.login-footer {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    font-size: 11px;
+}
+
+.login-footer a {
+    text-decoration: none;
+    color: #333;
+}
+
+/* ==========================================
+   로그인 화면 (전환 방식)
+   ========================================== */
+.login-view {
+    width: 100%;
+    /* min-height removed, controlled by flex layout */
+    flex: 1; /* 남은 공간을 모두 차지해 푸터를 하단으로 밀어냄 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+.login-view.hidden {
+    display: none !important;
+}
+
+.login-container-view {
+    background: white;
+    padding: 60px 60px 90px;
+    border-radius: 10px;
+    box-shadow: 5px 5px rgba(0,0,0,0.05);
+    width: 500px;
+    border: 1px solid #e0e0e0;
+}
+
+.login-container-view .input-group {
+    margin-bottom: 20px;
+}
+
+.login-container-view label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.login-container-view input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    color: #333;
+}
+
+.login-container-view input::placeholder {
+    color: #aaa;
+}
+
+.login-container-view input:focus {
+    border-color: #096B68;
+}
+
+.login-footer-links {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    font-size: 11px;
+}
+
+.login-footer-links a {
+    text-decoration: none;
+    color: #333;
+}
+
+/* ==========================================
+   랭킹 화면 스타일
+   ========================================== */
+.ranking-view {
+    width: 100%;
+    /* flex: 1 is already handled by common class or specific rule */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 0 100px;
+    background-color: #fff;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ranking-view.hidden {
+    display: none !important;
+}
+
+.ranking-header-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 60px;
+    width: 100%;
+}
+
+.rank-card {
+    background: white;
+    border: 1px solid #000;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    padding: 30px 20px;
+}
+
+.rank-1 {
+    width: 320px;
+    height: 320px;
+    margin-bottom: 30px; /* Center one slightly higher appearing or just larger */
+}
+
+/* Make 1st place visually distinct/larger/higher? 
+   In screenshot, 1 is center. 2 and 3 are side. 
+   Their tops are aligned roughly? No, 1 is slightly higher or just bigger.
+*/
+
+.rank-2, .rank-3 {
+    width: 280px;
+    height: 280px;
+    /* margin-top: 40px;  Push them down if we want 1st to pop up */
+}
+
+.rank-icon-wrapper {
+    position: relative;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Placeholder for Wreath - using text/emoji for now, scaled up */
+.wreath {
+    font-size: 80px;
+    position: absolute;
+    top: -20px;
+    z-index: 1;
+}
+
+/* Wreath colors filtering */
+.wreath.gold { filter: hue-rotate(45deg) saturate(3); opacity: 0.8; }
+.wreath.silver { filter: grayscale(100%); opacity: 0.6; }
+.wreath.bronze { filter: sepia(100%) saturate(2) hue-rotate(-30deg); opacity: 0.8; }
+
+.rank-card .rank-number {
+    font-size: 32px;
+    font-weight: 800;
+    z-index: 2;
+    position: relative;
+    color: #555;
+    margin-top: 10px;
+}
+
+.rank-1 .rank-number { color: #D4AF37; font-size: 40px; }
+.rank-2 .rank-number { color: #888; }
+.rank-3 .rank-number { color: #CD7F32; }
+
+.rank-user-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.rank-user-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 2px;
+}
+
+.rank-user-score {
+    font-size: 20px;
+    font-weight: 700;
+    color: #176B5F;
+}
+
+/* List Container */
+.ranking-list-container {
+    background-color: #E6E6E6; /* Light gray background */
+    width: 1500px;
+    border-radius: 30px;
+    padding: 30px 40px 50px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.ranking-search-bar {
+    display: flex;
+    margin-bottom: 20px;
+    /* Matches image: white input, dark icon button */
+    
+}
+
+.ranking-search-bar input {
+    border: none;
+    border-radius: 10px 0 0 10px;
+    padding: 5px 15px;
+    font-size: 14px;
+    width: 150px;
+    outline: none;
+}
+
+.ranking-search-btn {
+    background-color: #444;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    padding: 0 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ranking-grid-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    row-gap: 15px;
+    max-height: 245px; /* 3줄(6명)이 딱 보이도록 높이 조정 (70*3 + 15*2 = 240 + 여유 5px) */
+    overflow-y: auto; /* 세로 스크롤 허용 */
+    padding-right: 15px; /* 스크롤바 공간 확보 */
+}
+
+/* 스크롤바 스타일링 */
+.ranking-grid-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ranking-grid-list::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05); 
+    border-radius: 4px;
+}
+
+.ranking-grid-list::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+    border-radius: 4px;
+}
+
+.ranking-grid-list::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+}
+
+.ranking-list-item {
+    background: white;
+    border: 2px solid #176B5F; /* Tealish border */
+    border-radius: 10px;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.ranking-list-item .r-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.r-rank {
+    font-size: 20px;
+    font-weight: 800;
+    color: #333;
+    width: 25px;
+}
+
+.r-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+
+.ranking-list-item .r-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.r-label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 2px;
+}
+
+.r-score {
+    font-size: 16px;
+    font-weight: 700;
+    color: #176B5F;
+}
+
+/* Custom scroll bar track indicator on right? - Hide mock scrollbar */
+.custom-scroll-track {
+    display: none;
+}
+
+
+.rank-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* ==========================================
+   커뮤니티 화면 (Community View)
+   ========================================== */
+.community-view {
+    width: 100%;
+    /* margin-top: 0; already handled by structure */
+    background-color: #fff;
+    padding: 0;
+}
+
+.community-layout {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 80px);
+}
+
+/* 왼쪽 사이드바 */
+.community-sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, rgba(18, 153, 144, 0.8) 43%, #F4F4F4 92%);
+    /* Somewhat matching the teal gradient */
+    padding: 50px 0 0 0; /* Padding top */
+    flex-shrink: 0;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    padding-left: 30px; /* Indent items */
+}
+
+.menu-header {
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 50px;
+    padding-right: 20px;
+    line-height: 1.2;
+}
+
+.menu-item {
+    font-size: 18px;
+    padding: 15px 0 15px 20px;
+    cursor: pointer;
+    color: white;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+    position: relative;
+    font-weight: 500;
+}
+
+.menu-item.active {
+    background-color: white;
+    color: #006b6a;
+    border-radius: 30px 0 0 30px;
+    margin-right: 0;
+    box-shadow: -5px 5px 15px rgba(0,0,0,0.05);
+}
+
+/* 메인 컨텐츠 영역 */
+.community-main {
+    flex: 1;
+    padding: 60px 80px;
+    background-color: #fff;
+    border-right: 1px solid #eee;
+}
+
+.community-title-section {
+    margin-bottom: 40px;
+}
+
+.community-title-section h2 {
+    color: #096B68;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+.community-title-section p {
+    color: #666;
+    font-size: 16px;
+}
+
+/* 피드 */
+.community-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.feed-card {
+    border: 1px solid #B7B7B7; /* Default grey border */
+    border-radius: 16px;
+    padding: 30px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    position: relative;
+}
+
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.feed-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.feed-user-avatar {
+    width: 36px;
+    height: 36px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23999'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px;
+}
+
+.feed-user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+}
+
+.feed-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    color: #00695c; /* Teal color for icons */
+}
+
+.feed-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.feed-content p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* 오른쪽 사이드바 */
+.community-right-sidebar {
+    width: 250px;
+    padding: 60px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.new-post-btn {
+    background-color: #00695c;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+/* ==========================================
+   Notice Board Modal (New Post)
+   ========================================== */
+.notice-board-popup {
+    background-color: white;
+    width: 600px;
+    max-width: 90%;
+    padding: 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2001; /* Ensure above overlay */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.notice-board-title {
+    font-family: 'Times New Roman', Times, serif; /* Elegant serif font */
+    font-size: 36px;
+    color: #000;
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+.notice-form-group {
+    width: 100%;
+    display: flex;
+    margin-bottom: 25px;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.notice-form-group.row {
+    flex-direction: row;
+}
+
+.notice-form-group.top-align {
+    align-items: flex-start;
+}
+
+.notice-form-group label {
+    width: 50px;
+    font-weight: 600;
+    color: #222;
+    font-size: 15px;
+    margin-right: 15px;
+    padding-top: 0;
+    white-space: nowrap;
+}
+
+.notice-form-group.top-align label {
+    padding-top: 15px;
+}
+
+.notice-input {
+    border: 1px solid #107c78;
+    border-radius: 25px; /* Pill shape */
+    padding: 12px 20px;
+    font-size: 15px;
+    outline: none;
+    color: #666;
+}
+
+.notice-input::placeholder {
+    color: #999;
+}
+
+.notice-textarea {
+    flex: 1;
+    border: 1px solid #107c78;
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 15px;
+    height: 280px;
+    resize: none;
+    outline: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #666;
+}
+
+.notice-textarea::placeholder {
+    color: #999;
+}
+
+.notice-submit-btn {
+    margin-top: 10px;
+    background-color: #0E6A63; /* Match dark teal */
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px 0;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    width: 300px; /* Specific width */
+}
+
+.notice-submit-btn:hover {
+    background-color: #004d40;
+}
+
+/* Update popup overlay relative to header if needed 
+   Since existing style is top: 80px for modal container, 
+   we might want this specific modal to cover full screen if possible.
+   But reusing existing infrastructure is safer.
+   We will keep it as is.
+*/
+
+
+/* ==========================================
+   Community Reward Popup
+   ========================================== */
+.reward-popup {
+    background-color: white;
+    width: 360px;
+    height: 360px;
+    border-radius: 20px;
+    padding: 0px 35px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2100;
+}
+
+.reward-overlay {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.reward-logo-img {
+    height: 80px; /* Increased size */
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+
+.reward-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    letter-spacing: -0.5px;
+}
+
+.reward-desc {
+    font-size: 19px;
+    line-height: 1.5;
+    color: #222;
+    word-break: keep-all;
+}
+
+.reward-desc .highlight {
+    color: #129990;
+    font-weight: 700;
+}
+
+.reward-check-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #888;
+}
+
+.reward-check-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #00695c;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.reward-check-row label {
+    cursor: pointer;
+    font-size: 11px;
+    color: #888;
+}
+
+.reward-confirm-btn {
+    background-color: #0e6a63;
+    color: white;
+    width: 130px;
+    padding: 10px 0;
+    border-radius: 25px;
+    border: none;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    transition: background-color 0.2s;
+}
+.reward-confirm-btn:hover {
+    background-color: #004d40;
+}
+
+/* Empty State for My Post */
+.my-post-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+    text-align: center;
+    min-height: 400px;
+}
+
+.empty-emoji {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.empty-title {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.empty-subtitle {
+    font-size: 16px;
+    color: #666;
 }

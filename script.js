@@ -38,6 +38,124 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
+    // 화면 전환 설정 (메인, 로그인, 회원가입, 랭킹)
+    // ==========================================
+    const loginLink = document.getElementById('login-link');
+    const signupLink = document.getElementById('signup-link');
+    const rankingLink = document.getElementById('ranking-link');
+    const communityLink = document.getElementById('community-link');
+    const logo = document.querySelector('.logo');
+
+    const loginView = document.getElementById('login-view');
+    const signupView = document.getElementById('signup-view');
+    const rankingView = document.getElementById('ranking-view');
+    const communityView = document.getElementById('community-view');
+    
+    const mainWrap = document.querySelector('.wrap');
+    const header = document.querySelector('.header');
+    
+    // 로그인 화면 내의 회원가입 버튼
+    const loginSignupBtn = loginView ? loginView.querySelector('.signup-btn') : null;
+
+    // 함수: 모든 화면 숨기기 및 상태 초기화
+    function hideAllViews() {
+        if (mainWrap) mainWrap.classList.add('hidden');
+        if (loginView) loginView.classList.add('hidden');
+        if (signupView) signupView.classList.add('hidden');
+        if (rankingView) rankingView.classList.add('hidden');
+        if (communityView) communityView.classList.add('hidden');
+
+        // 챌린지 모달 숨기기
+        const cModal = document.getElementById('challenge-modal');
+        if (cModal) cModal.classList.add('hidden');
+        
+        const oModal = document.getElementById('ongoing-challenge-modal');
+        if (oModal) oModal.classList.add('hidden');
+        
+        // 푸터 표시 (챌린지 링크 등에서 숨겼을 경우 복구)
+        const footer = document.querySelector('.footer');
+        if (footer) footer.style.display = '';
+    }
+
+    // 로고 클릭 시 (홈으로 이동)
+    if (logo) {
+        logo.addEventListener('click', () => {
+             hideAllViews();
+             if (mainWrap) mainWrap.classList.remove('hidden');
+             if (header) header.classList.remove('hidden'); // 헤더 표시
+        });
+    }
+
+    // 로그인 링크 클릭 시
+    if (loginLink && loginView) {
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllViews();
+            loginView.classList.remove('hidden');
+            if (header) header.classList.add('hidden'); // 로그인 시 헤더 숨김
+            window.scrollTo(0, 0);
+        });
+    }
+
+    // 회원가입 링크 클릭 시
+    if (signupLink && signupView) {
+        signupLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllViews();
+            signupView.classList.remove('hidden');
+            if (header) header.classList.add('hidden'); // 회원가입 시 헤더 숨김
+            window.scrollTo(0, 0);
+        });
+    }
+
+    // 로그인 화면에서 '회원가입' 버튼 클릭 시
+    if (loginSignupBtn && signupView) {
+        loginSignupBtn.addEventListener('click', () => {
+            hideAllViews();
+            signupView.classList.remove('hidden');
+            if (header) header.classList.add('hidden');
+            window.scrollTo(0, 0);
+        });
+    }
+
+    // 랭킹 링크 클릭 시
+    if (rankingLink && rankingView) {
+        rankingLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllViews();
+            rankingView.classList.remove('hidden');
+            if (header) header.classList.remove('hidden'); // 랭킹 시 헤더 표시
+            window.scrollTo(0, 0);
+        });
+    }
+
+    // 커뮤니티 링크 클릭 시
+    if (communityLink && communityView) {
+        communityLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllViews();
+            communityView.classList.remove('hidden');
+            if (header) header.classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            // 커뮤니티 화면에서는 푸터 숨기기
+            const footer = document.querySelector('.footer');
+            if (footer) footer.style.display = 'none';
+
+            // Community Reward Popup Check
+            const rewardModal = document.getElementById('community-reward-modal');
+            if (rewardModal) {
+                 const today = new Date().toISOString().split('T')[0];
+                 const hideDate = localStorage.getItem('hideRewardPopupDate');
+                 if (hideDate !== today) {
+                     rewardModal.classList.remove('hidden');
+                 }
+            }
+        });
+    }
+
+
+    // ==========================================
     // 타이핑 효과를 위한 Intersection Observer 설정
     // 화면에 요소가 보일 때 글자가 하나씩 타이핑되는 효과
     // ==========================================
@@ -526,10 +644,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 로고 클릭 시 메인 페이지로 돌아가기
+    // 로고 클릭 시 메인 페이지로 돌아가기 (기존 이벤트 리스너 추가)
     // ==========================================
-    const logo = document.querySelector('.logo');
+    // logo는 상단에서 이미 정의됨
     const attendanceSection = document.querySelector('.attendance-section');
+    
     
     if (logo) {
         logo.addEventListener('click', () => {
@@ -566,14 +685,19 @@ document.addEventListener('DOMContentLoaded', () => {
         attendanceLink.addEventListener('click', (e) => {
             e.preventDefault();
             
-            // Hide other sections
+            // 다른 전체 화면 뷰(랭킹, 로그인 등) 숨기기 및 .wrap 표시
+            hideAllViews(); 
+            if (mainWrap) mainWrap.classList.remove('hidden');
+            if (header) header.classList.remove('hidden'); // 헤더 표시
+
+            // Hide other sections within .wrap
             const selectors = [
                 '.main',
                 '.challenge-quicklink',
                 '.ranking-quicklink',
                 '.shop-quicklink',
-                '.community-quicklink',
-                '.footer'
+                '.community-quicklink'
+                // '.footer' -> 푸터는 유지할지 여부를 결정해야 하는데, 이전 요청에서 푸터는 항상 있어야 한다고 했으므로 숨김 목록에서 제거
             ];
             
             selectors.forEach(selector => {
@@ -582,6 +706,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     element.style.display = 'none';
                 }
             });
+
+            // 푸터가 스타일로 숨겨져 있을 수 있으므로 복구
+            const footer = document.querySelector('.footer');
+            if (footer) footer.style.display = '';
             
             // Hide modals
             if (challengeModal) challengeModal.classList.add('hidden');
@@ -1284,16 +1412,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${hours}시간 ${minutes}분`;
     };
     
+    // 스토리지 키 (초기화를 위해 v2로 변경)
+    const KEY_LAST_DATE = 'att_last_date_v2';
+    const KEY_ATT_COUNT = 'att_count_v2';
+    const KEY_CHECKED_INDICES = 'att_indices_v2';
+
     // 마지막 출석 날짜 가져오기
-    let lastAttendanceDate = localStorage.getItem('lastAttendanceDate');
+    let lastAttendanceDate = localStorage.getItem(KEY_LAST_DATE);
     const todayDate = getTodayDate();
-    const alreadyCheckedToday = lastAttendanceDate === todayDate;
+    let alreadyCheckedToday = lastAttendanceDate === todayDate;
     
     // 연속 출석 일수 가져오기
-    let attendanceCount = parseInt(localStorage.getItem('attendanceCount')) || 0;
+    let attendanceCount = parseInt(localStorage.getItem(KEY_ATT_COUNT)) || 0;
     
     // 체크된 카드들의 인덱스 배열 가져오기
-    let checkedCardIndices = JSON.parse(localStorage.getItem('checkedCardIndices')) || [];
+    let checkedCardIndices = JSON.parse(localStorage.getItem(KEY_CHECKED_INDICES)) || [];
     
     // 날짜가 바뀌었다면 연속 출석 체크
     if (lastAttendanceDate && lastAttendanceDate !== todayDate) {
@@ -1302,12 +1435,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const diffTime = today - lastDate;
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
         
-        // 하루 이상 지났으면 연속 출석이 끊김
+        // 하루 이상 지났으면 연속 출석이 끊김 (어제 안 찍었으면)
         if (diffDays > 1) {
             attendanceCount = 0;
-            checkedCardIndices = [];
-            localStorage.setItem('attendanceCount', '0');
-            localStorage.setItem('checkedCardIndices', JSON.stringify([]));
+            // 시각적 초기화는 아래에서 처리하되, 데이터는 리셋
+            checkedCardIndices = []; 
+            localStorage.setItem(KEY_ATT_COUNT, '0');
+            localStorage.setItem(KEY_CHECKED_INDICES, JSON.stringify([]));
+            // 이미 찍힌게 있다면 지워줘야 함 (페이지 로드 시 반영됨)
         }
     }
     
@@ -1338,10 +1473,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            // 이미 체크된 카드는 다시 클릭할 수 없음
-            if (card.classList.contains('checked')) {
-                showAlert('이미 체크된 카드입니다!');
-                return;
+            // 순서 체크: 다음 찍어야 할 인덱스와 현재 클릭한 인덱스가 일치해야 함
+            // 만약 일주일이 다 찼다면(7개), 0번부터 다시 시작
+            let nextIndex = checkedCardIndices.length;
+            if (nextIndex >= 7) {
+                nextIndex = 0;
+            }
+
+            // 잘못된 순서 클릭 시
+            if (index !== nextIndex) {
+                 if (index < nextIndex) {
+                     showAlert('이미 완료된 출석입니다!');
+                 } else {
+                     showAlert('첫 번째 날부터 순서대로 출석해주세요!');
+                 }
+                 return;
+            }
+
+            // 7일 사이클이 돌아서 다시 0번을 찍는 경우, 기존 체크들 초기화
+            if (index === 0 && checkedCardIndices.length >= 7) {
+                attCards.forEach(c => c.classList.remove('checked'));
+                checkedCardIndices = [];
+                attendanceCount = 0;
             }
             
             // 출석 완료 처리
@@ -1352,19 +1505,14 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // 체크된 카드 인덱스 저장
             checkedCardIndices.push(index);
-            
-            // 7일이 지나면 첫 번째 카드부터 다시 시작
-            if (checkedCardIndices.length > 7) {
-                const oldestIndex = checkedCardIndices.shift();
-                if (attCards[oldestIndex]) {
-                    attCards[oldestIndex].classList.remove('checked');
-                }
-            }
+
+            // 오늘 체크 플래그 설정
+            alreadyCheckedToday = true;
             
             // 로컬스토리지에 저장
-            localStorage.setItem('lastAttendanceDate', todayDate);
-            localStorage.setItem('attendanceCount', attendanceCount.toString());
-            localStorage.setItem('checkedCardIndices', JSON.stringify(checkedCardIndices));
+            localStorage.setItem(KEY_LAST_DATE, todayDate);
+            localStorage.setItem(KEY_ATT_COUNT, attendanceCount.toString());
+            localStorage.setItem(KEY_CHECKED_INDICES, JSON.stringify(checkedCardIndices));
             
             // 포인트 정보 가져오기
             const pointElement = card.querySelector('.point');
@@ -1381,6 +1529,255 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     showAlert('🎊 7일 연속 출석 달성! 보너스 400P를 획득했습니다!');
                 }, 500);
+            }
+        });
+    });
+
+    // ==========================================
+    // New Post Modal (Notice Board)
+    // ==========================================
+    const newPostBtn = document.querySelector('.new-post-btn');
+    const newPostModal = document.getElementById('new-post-modal');
+    
+    if (newPostBtn && newPostModal) {
+        newPostBtn.addEventListener('click', () => {
+            newPostModal.classList.remove('hidden');
+        });
+        
+        // Close on overlay click
+        const overlay = newPostModal.querySelector('.popup-overlay');
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                newPostModal.classList.add('hidden');
+            });
+        }
+
+        // Handle submit button (Just close for now)
+        const submitBtn = newPostModal.querySelector('.notice-submit-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                const title = newPostModal.querySelector('.notice-input').value;
+                const content = newPostModal.querySelector('.notice-textarea').value;
+                
+                if(!title.trim() || !content.trim()) {
+                    showAlert('제목과 내용을 모두 입력해주세요.');
+                    return;
+                }
+
+                showAlert('게시글이 성공적으로 등록되었습니다!');
+                newPostModal.classList.add('hidden');
+                
+                // Clear inputs
+                newPostModal.querySelector('.notice-input').value = '';
+                newPostModal.querySelector('.notice-textarea').value = '';
+            });
+        }
+    }
+
+    // ==========================================
+    // Community Reward Popup Logic
+    // ==========================================
+    const rewardModal = document.getElementById('community-reward-modal');
+    if (rewardModal) {
+        const rewardConfirmBtn = rewardModal.querySelector('.reward-confirm-btn');
+        const rewardCheckbox = rewardModal.querySelector('#dont-show-reward');
+
+        if (rewardConfirmBtn) {
+            rewardConfirmBtn.addEventListener('click', () => {
+                if (rewardCheckbox && rewardCheckbox.checked) {
+                    const today = new Date().toISOString().split('T')[0];
+                    localStorage.setItem('hideRewardPopupDate', today);
+                }
+                rewardModal.classList.add('hidden');
+            });
+        }
+    }
+
+    // ==========================================
+    // Community Sidebar Navigation Logic
+    // ==========================================
+    const menuItems = document.querySelectorAll('.community-sidebar .menu-item');
+    const commTitle = document.querySelector('.community-title-section h2');
+    const commDesc = document.querySelector('.community-title-section p');
+    const communityFeed = document.querySelector('.community-feed');
+    
+    // Initial feed content to restore later
+    const defaultFeedHTML = `
+        <div class="feed-card">
+            <div class="feed-header">
+                <div class="feed-user-info">
+                    <div class="feed-user-avatar"></div>
+                    <span class="feed-user-name">수학 고민러</span>
+                </div>
+                <div class="feed-meta">
+                    <span class="like-count">♡ 34</span>
+                    <span class="comment-count">💬 17</span>
+                </div>
+            </div>
+            <div class="feed-content">
+                <h3>미적분 문제 질문이요!</h3>
+                <p>치환적분 문제인데 도와주세요</p>
+            </div>
+        </div>
+
+        <div class="feed-card">
+            <div class="feed-header">
+                <div class="feed-user-info">
+                    <div class="feed-user-avatar"></div>
+                    <span class="feed-user-name">공부병아리</span>
+                </div>
+                <div class="feed-meta">
+                    <span class="like-count">♡ 10</span>
+                    <span class="comment-count">💬 15</span>
+                </div>
+            </div>
+            <div class="feed-content">
+                <h3>기말고사 계획 도와주세요</h3>
+                <p>전교 1등이 기말고사 계획 도와주세요!</p>
+            </div>
+        </div>
+
+        <div class="feed-card">
+            <div class="feed-header">
+                <div class="feed-user-info">
+                    <div class="feed-user-avatar"></div>
+                    <span class="feed-user-name">역사 덕후</span>
+                </div>
+                <div class="feed-meta">
+                    <span class="like-count">♡ 24</span>
+                    <span class="comment-count">💬 9</span>
+                </div>
+            </div>
+            <div class="feed-content">
+                <h3>한국사 정리 노트 공유</h3>
+                <p>시대별로 정리한 한국사 노트 공유해요~</p>
+            </div>
+        </div>
+    `;
+
+    // Tips & How-To content
+    const tipsFeedHTML = `
+        <div class="feed-card">
+            <div class="feed-header">
+                <div class="feed-user-info">
+                    <div class="feed-user-avatar"></div>
+                    <span class="feed-user-name">수학 고민러</span>
+                </div>
+                <div class="feed-meta">
+                    <span class="like-count">♡ 34</span>
+                    <span class="comment-count">💬 17</span>
+                </div>
+            </div>
+            <div class="feed-content">
+                <h3>지메 웨이브 잘하는 꿀팁</h3>
+                <p>다시 태어나셈 ㅋ</p>
+            </div>
+        </div>
+
+        <div class="feed-card">
+            <div class="feed-header">
+                <div class="feed-user-info">
+                    <div class="feed-user-avatar"></div>
+                    <span class="feed-user-name">공부병아리</span>
+                </div>
+                <div class="feed-meta">
+                    <span class="like-count">♡ 10</span>
+                    <span class="comment-count">💬 15</span>
+                </div>
+            </div>
+            <div class="feed-content">
+                <h3>테라리아 아이템 파밍 쉽게 하는법</h3>
+                <p>팜 만들어서 잠수 태워 놓으세용</p>
+            </div>
+        </div>
+
+        <div class="feed-card">
+            <div class="feed-header">
+                <div class="feed-user-info">
+                    <div class="feed-user-avatar"></div>
+                    <span class="feed-user-name">역사 덕후</span>
+                </div>
+                <div class="feed-meta">
+                    <span class="like-count">♡ 24</span>
+                    <span class="comment-count">💬 9</span>
+                </div>
+            </div>
+            <div class="feed-content">
+                <h3>경쟁전 마스터 찍는 법</h3>
+                <p>픽을 잘하면 됨 픽 못하는 벌레면 걍 접으셈 ㅉ</p>
+            </div>
+        </div>
+    `;
+
+    // My Post Empty State
+    const myPostEmptyHTML = `
+        <div class="my-post-empty">
+            <div class="empty-emoji">😢</div>
+            <div class="empty-title">아직 작성한 글이 없어요 ㅠ.ㅠ</div>
+            <div class="empty-subtitle">New Post 버튼을 눌러 새 글을 작성해보세요!</div>
+        </div>
+    `;
+
+    const pageContent = {
+        'menu-popular': {
+            title: 'Popular Posts',
+            desc: '인기글을 구경해 보세요!',
+            feedType: 'default',
+            highlightFirst: true
+        },
+        'menu-tips': {
+            title: 'Tips & How-To',
+            desc: '다른 사람들의 노하우와 팁을 구경해보세요.',
+            feedType: 'tips',
+            highlightFirst: true
+        },
+        'menu-data': {
+            title: 'Data Sharing', // Should I revert title? User request didn't specify. Assuming "Latest Community" is default. Wait, user request for Popular was explicit.
+            desc: '다양한 질문과 정보를 나누며 커뮤니티를 즐겨보세요',
+            feedType: 'default',
+            highlightFirst: false
+        },
+        'menu-mypost': {
+            title: 'My Post',
+            desc: '내가 작성한 글을 한 눈에 볼 수 있어요',
+            feedType: 'empty',
+            highlightFirst: false
+        },
+        // Defaults
+        'default': {
+            title: 'Community',
+            desc: '함께 소통하는 공간입니다.',
+            feedType: 'default',
+            highlightFirst: false
+        }
+    };
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', () => {
+            menuItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            
+            const id = item.id;
+            const content = pageContent[id] || pageContent['default'];
+            
+            if(commTitle) commTitle.textContent = content.title;
+            if(commDesc) commDesc.textContent = content.desc;
+
+            // Content Switching
+            if (content.feedType === 'tips') {
+                communityFeed.innerHTML = tipsFeedHTML;
+            } else if (content.feedType === 'empty') {
+                communityFeed.innerHTML = myPostEmptyHTML;
+            } else {
+                communityFeed.innerHTML = defaultFeedHTML;
+            }
+
+            // Apply highlight if needed
+            if (content.highlightFirst) {
+                const firstCard = communityFeed.querySelector('.feed-card:first-child');
+                if (firstCard) {
+                    firstCard.style.border = '2px solid #90D1CA';
+                }
             }
         });
     });
