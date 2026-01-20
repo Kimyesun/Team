@@ -110,7 +110,7 @@
                     </svg>
                 </div>
                 <div class="ranking-quicklink-list left">
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">1</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -121,7 +121,7 @@
                             <span class="value">4,893</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">2</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -132,7 +132,7 @@
                             <span class="value">4,201</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">3</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -143,7 +143,7 @@
                             <span class="value">3,216</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">4</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -154,7 +154,7 @@
                             <span class="value">3,142</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">5</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -167,7 +167,7 @@
                     </div>
                 </div>
                 <div class="ranking-quicklink-list right">
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">6</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -178,7 +178,7 @@
                             <span class="value">2,423</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">7</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -189,7 +189,7 @@
                             <span class="value">2,213</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">8</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -200,7 +200,7 @@
                             <span class="value">1,998</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">9</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -211,7 +211,7 @@
                             <span class="value">1,873</span>
                         </div>
                     </div>
-                    <div class="rank-card">
+                    <div class="quick-rank-card">
                         <div class="rank-num">10</div>
                         <div class="rank-profile">
                             <div class="profile-img"></div>
@@ -719,12 +719,13 @@
 
             <!-- 메인 컨텐츠 -->
             <div class="community-main">
-                <div class="community-title-section">
-                    <h2>Latest Community</h2>
-                    <p>다양한 질문과 정보를 나누며 커뮤니티를 즐겨보세요</p>
-                </div>
+                <div id="community-feed-view">
+                    <div class="community-title-section">
+                        <h2>Latest Community</h2>
+                        <p>다양한 질문과 정보를 나누며 커뮤니티를 즐겨보세요</p>
+                    </div>
                 
-                <div class="community-board-container">
+                    <div class="community-board-container">
                     <div class="community-feed">
                         <div class="feed-card">
                             <div class="feed-header">
@@ -779,6 +780,55 @@
                     </div>
                     <div class="community-board-sidebar">
                         <button class="btn-new-post">New Post</button>
+                    </div>
+                </div>
+                </div> <!-- End of community-feed-view -->
+
+                <!-- Post Detail View (Hidden by default) -->
+                <div id="post-detail-view" class="hidden">
+                    <div class="post-detail-board">
+                        <div class="pd-header">
+                            <div class="pd-header-top" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                                <h2 class="pd-title" style="margin: 0; font-size: 32px; font-weight: 700; color: #000;">제목</h2>
+                                <button class="close-detail-text-btn" style="background: none; border: none; color: #999; font-size: 24px; cursor: pointer;">×</button>
+                            </div>
+                            
+                            <div class="pd-meta-row" style="border: none; padding: 0;">
+                                <div class="pd-user-info">
+                                    <div class="pd-avatar"></div>
+                                    <div class="pd-user-text">
+                                        <span class="pd-username">작성자</span>
+                                        <span class="pd-date-view">2025.12.29 12:15 조회수 0</span>
+                                    </div>
+                                </div>
+                                <div class="pd-actions">
+                                    <button class="pd-btn edit hidden">수정하기</button>
+                                    <button class="pd-btn delete hidden">삭제하기</button>
+                                    <div class="pd-stats">
+                                        <span class="pd-like">♡ 0</span>
+                                        <span class="pd-comment">💬 0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pd-divider" style="height: 1px; background: #eee; margin: 30px 0;"></div>
+
+                        <div class="pd-body">
+                            <div class="pd-content">내용</div>
+                        </div>
+                        
+                        <div class="pd-divider" style="height: 1px; background: #eee; margin: 40px 0;"></div>
+
+                        <div class="pd-comments-section">
+                            <div class="comment-input-area" style="border: 2px solid #ddd; border-radius: 16px; padding: 8px 10px 8px 24px; margin-bottom: 40px; display: flex; align-items: center; justify-content: space-between; background-color: #fff; transition: border-color 0.2s;">
+                                <input type="text" placeholder="댓글 추가..." class="comment-input" style="border: none; padding: 12px 0; font-size: 15px; width: 100%; outline: none; background: transparent;">
+                                <button class="comment-submit-btn" style="background: #176B5F; color: white; padding: 10px 26px; border-radius: 12px; font-weight: 700; flex-shrink: 0; margin-left: 15px; border: none; cursor: pointer; font-size: 14px; box-shadow: 0 4px 10px rgba(23, 107, 95, 0.2);">등록</button>
+                            </div>
+                            <div class="comments-list">
+                                <!-- Comments will be injected here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1199,6 +1249,29 @@
         </div>
     </div>
 
+    <div id="custom-confirm-modal" class="popup-modal hidden" style="z-index: 20000; display: flex; align-items: center; justify-content: center;">
+        <div class="popup-overlay" style="background: rgba(0,0,0,0.4);"></div>
+        <div class="popup-content custom-confirm-popup">
+            <p id="custom-confirm-msg" class="confirm-msg">메시지</p>
+            <div class="confirm-btn-row">
+                <button id="custom-confirm-cancel" class="confirm-btn-cancel">취소</button>
+                <button id="custom-confirm-ok" class="confirm-btn-ok">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-prompt-modal" class="popup-modal hidden" style="z-index: 20010; display: flex; align-items: center; justify-content: center;">
+        <div class="popup-overlay" style="background: rgba(0,0,0,0.4);"></div>
+        <div class="popup-content custom-prompt-popup">
+            <h3 id="custom-prompt-title" class="prompt-title">입력해주세요</h3>
+            <input type="text" id="custom-prompt-input" class="prompt-input" />
+            <div class="confirm-btn-row">
+                <button id="custom-prompt-cancel" class="confirm-btn-cancel">취소</button>
+                <button id="custom-prompt-ok" class="confirm-btn-ok">확인</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>

@@ -129,9 +129,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 랭킹 퀵링크 화살표 클릭 시
+    const quickRankingArrow = document.querySelector('.ranking-quicklink-arrow');
+    if (quickRankingArrow && rankingView) {
+        quickRankingArrow.addEventListener('click', () => {
+             hideAllViews();
+             rankingView.classList.remove('hidden');
+             if (header) header.classList.remove('hidden');
+             window.scrollTo(0, 0);
+        });
+    }
+
     // 커뮤니티 링크 클릭 시
     if (communityLink && communityView) {
         communityLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            hideAllViews();
+            communityView.classList.remove('hidden');
+            if (header) header.classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            // 커뮤니티 화면에서는 푸터 숨기기
+            const footer = document.querySelector('.footer');
+            if (footer) footer.style.display = 'none';
+
+            // Community Reward Popup Check
+            const rewardModal = document.getElementById('community-reward-modal');
+            if (rewardModal) {
+                 const today = new Date().toISOString().split('T')[0];
+                 const hideDate = localStorage.getItem('hideRewardPopupDate');
+                 if (hideDate !== today) {
+                     rewardModal.classList.remove('hidden');
+                 }
+            }
+        });
+    }
+
+    // 커뮤니티 퀵링크 "바로가기" 클릭 시
+    const communityQuickLink = document.querySelector('.community-more');
+    if (communityQuickLink && communityView) {
+        communityQuickLink.addEventListener('click', (e) => {
             e.preventDefault();
             hideAllViews();
             communityView.classList.remove('hidden');
@@ -260,6 +297,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     element.style.display = 'none';
                 }
             });
+        });
+    }
+
+    // 챌린지 퀵링크 버튼 클릭 시 (추가)
+    const challengeQuickBtn = document.querySelector('.challenge-quicklink button');
+    if (challengeQuickBtn && challengeModal) {
+        challengeQuickBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            challengeModal.classList.remove('hidden');
+
+            const hideSelectors = [
+                '.main',
+                '.challenge-quicklink',
+                '.ranking-quicklink',
+                '.shop-quicklink',
+                '.community-quicklink',
+                '.footer'
+            ];
+
+            hideSelectors.forEach(selector => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+            window.scrollTo(0, 0);
         });
     }
 
@@ -1541,6 +1604,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (newPostBtn && newPostModal) {
         newPostBtn.addEventListener('click', () => {
+            isEditMode = false;
+            
+            // Reset UI for New Post
+            const modalTitle = newPostModal.querySelector('.notice-board-title');
+            if(modalTitle) modalTitle.textContent = 'Notice Board';
+            
+            const sBtn = newPostModal.querySelector('.notice-submit-btn');
+            if(sBtn) sBtn.textContent = '글 작성하기';
+            
+            const titleInput = newPostModal.querySelector('.notice-input');
+            const contentInput = newPostModal.querySelector('.notice-textarea');
+            if(titleInput) titleInput.value = '';
+            if(contentInput) contentInput.value = '';
+            
             newPostModal.classList.remove('hidden');
         });
         
@@ -1552,24 +1629,86 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Handle submit button (Just close for now)
+        // Handle submit button
         const submitBtn = newPostModal.querySelector('.notice-submit-btn');
         if (submitBtn) {
             submitBtn.addEventListener('click', () => {
-                const title = newPostModal.querySelector('.notice-input').value;
-                const content = newPostModal.querySelector('.notice-textarea').value;
+                const titleInput = newPostModal.querySelector('.notice-input');
+                const contentInput = newPostModal.querySelector('.notice-textarea');
+                const title = titleInput.value;
+                const content = contentInput.value;
                 
                 if(!title.trim() || !content.trim()) {
                     showAlert('제목과 내용을 모두 입력해주세요.');
                     return;
                 }
 
-                showAlert('게시글이 성공적으로 등록되었습니다!');
+                if (isEditMode && currentOpenPost) {
+                    // Update Mode
+                    currentOpenPost.title = title;
+                    currentOpenPost.content = content;
+                    
+                    // Update Detail View locally
+                    const pdTitle = document.querySelector('.pd-title');
+                    const pdContent = document.querySelector('.pd-content');
+                    if(pdTitle) pdTitle.textContent = title;
+                    if(pdContent) pdContent.textContent = content;
+
+                    // Save
+                    localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+
+                    // Refresh Feed
+                    if (currentOpenMenuId) renderFeed(currentOpenMenuId);
+                    
+                    showAlert('게시글이 수정되었습니다.');
+                } else {
+                    // Create New Post Mode
+                    // Add to Current Menu's Data
+                    const activeMenu = document.querySelector('.community-sidebar .menu-item.active');
+                    if (activeMenu && typeof postsData !== 'undefined') {
+                        const menuId = activeMenu.id;
+                        const now = new Date();
+                        // Format: YYYY.MM.DD. HH:mm
+                        const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}. ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+                        
+                        const newPost = {
+                            user: '나 (Guest)',
+                            avatar: '',
+                            like: 0,
+                            comment: 0,
+                            title: title,
+                            content: content,
+                            date: dateStr,
+                            views: 0,
+                            comments: []
+                        };
+                        
+                        // Add to current list
+                        if (postsData[menuId]) {
+                            postsData[menuId].unshift(newPost);
+                        }
+                        
+                        // Also add to "My Post" list
+                        if (menuId !== 'menu-mypost') {
+                             postsData['menu-mypost'].unshift(newPost);
+                        }
+                        
+                        // Save to LocalStorage
+                        localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+
+                        // Re-render
+                        if (typeof renderFeed === 'function') {
+                            renderFeed(menuId);
+                        }
+                        showAlert('게시글이 성공적으로 등록되었습니다!');
+                    }
+                }
+
                 newPostModal.classList.add('hidden');
                 
                 // Clear inputs
-                newPostModal.querySelector('.notice-input').value = '';
-                newPostModal.querySelector('.notice-textarea').value = '';
+                titleInput.value = '';
+                contentInput.value = '';
             });
         }
     }
@@ -1601,184 +1740,554 @@ document.addEventListener('DOMContentLoaded', () => {
     const commDesc = document.querySelector('.community-title-section p');
     const communityFeed = document.querySelector('.community-feed');
     
-    // Initial feed content to restore later
-    const defaultFeedHTML = `
-        <div class="feed-card">
-            <div class="feed-header">
-                <div class="feed-user-info">
-                    <div class="feed-user-avatar"></div>
-                    <span class="feed-user-name">수학 고민러</span>
-                </div>
-                <div class="feed-meta">
-                    <span class="like-count">♡ 34</span>
-                    <span class="comment-count">💬 17</span>
-                </div>
-            </div>
-            <div class="feed-content">
-                <h3>미적분 문제 질문이요!</h3>
-                <p>치환적분 문제인데 도와주세요</p>
-            </div>
-        </div>
+    // Initial Post Data (Default)
+    const defaultPostsData = {
+        'menu-popular': [
+             { user: '수학 고민러', avatar: '', like: 34, comment: 17, title: '미적분 문제 질문이요!', content: '치환적분 문제인데 도와주세요', date: '2025.12.29. 12:15', views: 256, comments: [] },
+             { user: '공부병아리', avatar: '', like: 10, comment: 15, title: '기말고사 계획 도와주세요', content: '전교 1등이 기말고사 계획 도와주세요!\n\n어제는 문학 위주로 공부했고, 오늘 아침엔 수학 문제 조금 풀었어요.\n이 흐름 참고해서 오늘 공부 계획 추천 부탁드립니다!', date: '2025.12.29. 12:15', views: 256, comments: [
+                 { user: '피타고라스', content: '수학만 집중적으로 하세요', date: '2025.12.29. 12:15', like: 2 },
+                 { user: '유김박이', content: '도움이 되었습니다 ㄳ', date: '2025.12.29. 12:15', like: 4 },
+                 { user: '나랏말싸미', content: '문학만 집중적으로 하세요', date: '2025.12.29. 12:15', like: 1 }
+             ] },
+             { user: '역사 덕후', avatar: '', like: 24, comment: 9, title: '한국사 정리 노트 공유', content: '시대별로 정리한 한국사 노트 공유해요~', date: '2025.12.29. 12:15', views: 256, comments: [] }
+        ], 
+        'menu-tips': [
+            { user: '수학 고민러', avatar: '', like: 34, comment: 17, title: '지메 웨이브 잘하는 꿀팁', content: '다시 태어나셈 ㅋ', date: '2025.12.29. 12:15', views: 256, comments: [] },
+            { user: '공부병아리', avatar: '', like: 10, comment: 15, title: '테라리아 아이템 파밍 쉽게 하는법', content: '팜 만들어서 잠수 태워 놓으세용', date: '2025.12.29. 12:15', views: 256, comments: [] },
+            { user: '역사 덕후', avatar: '', like: 24, comment: 9, title: '경쟁전 마스터 찍는 법', content: '픽을 잘하면 됨 픽 못하는 벌레면 걍 접으셈 ㅉ', date: '2025.12.29. 12:15', views: 256, comments: [] }
+        ],
+        'menu-data': [
+             { user: '수학 고민러', avatar: '', like: 34, comment: 17, title: '미적분 문제 질문이요!', content: '치환적분 문제인데 도와주세요', date: '2025.12.29. 12:15', views: 256, comments: [] },
+             { user: '공부병아리', avatar: '', like: 10, comment: 15, title: '기말고사 계획 도와주세요', content: '전교 1등이 기말고사 계획 도와주세요!', date: '2025.12.29. 12:15', views: 256, comments: [] },
+             { user: '역사 덕후', avatar: '', like: 24, comment: 9, title: '한국사 정리 노트 공유', content: '시대별로 정리한 한국사 노트 공유해요~', date: '2025.12.29. 12:15', views: 256, comments: [] }
+        ],
+        'menu-mypost': []
+    };
 
-        <div class="feed-card">
-            <div class="feed-header">
-                <div class="feed-user-info">
-                    <div class="feed-user-avatar"></div>
-                    <span class="feed-user-name">공부병아리</span>
-                </div>
-                <div class="feed-meta">
-                    <span class="like-count">♡ 10</span>
-                    <span class="comment-count">💬 15</span>
-                </div>
-            </div>
-            <div class="feed-content">
-                <h3>기말고사 계획 도와주세요</h3>
-                <p>전교 1등이 기말고사 계획 도와주세요!</p>
-            </div>
-        </div>
-
-        <div class="feed-card">
-            <div class="feed-header">
-                <div class="feed-user-info">
-                    <div class="feed-user-avatar"></div>
-                    <span class="feed-user-name">역사 덕후</span>
-                </div>
-                <div class="feed-meta">
-                    <span class="like-count">♡ 24</span>
-                    <span class="comment-count">💬 9</span>
-                </div>
-            </div>
-            <div class="feed-content">
-                <h3>한국사 정리 노트 공유</h3>
-                <p>시대별로 정리한 한국사 노트 공유해요~</p>
-            </div>
-        </div>
-    `;
-
-    // Tips & How-To content
-    const tipsFeedHTML = `
-        <div class="feed-card">
-            <div class="feed-header">
-                <div class="feed-user-info">
-                    <div class="feed-user-avatar"></div>
-                    <span class="feed-user-name">수학 고민러</span>
-                </div>
-                <div class="feed-meta">
-                    <span class="like-count">♡ 34</span>
-                    <span class="comment-count">💬 17</span>
-                </div>
-            </div>
-            <div class="feed-content">
-                <h3>지메 웨이브 잘하는 꿀팁</h3>
-                <p>다시 태어나셈 ㅋ</p>
-            </div>
-        </div>
-
-        <div class="feed-card">
-            <div class="feed-header">
-                <div class="feed-user-info">
-                    <div class="feed-user-avatar"></div>
-                    <span class="feed-user-name">공부병아리</span>
-                </div>
-                <div class="feed-meta">
-                    <span class="like-count">♡ 10</span>
-                    <span class="comment-count">💬 15</span>
-                </div>
-            </div>
-            <div class="feed-content">
-                <h3>테라리아 아이템 파밍 쉽게 하는법</h3>
-                <p>팜 만들어서 잠수 태워 놓으세용</p>
-            </div>
-        </div>
-
-        <div class="feed-card">
-            <div class="feed-header">
-                <div class="feed-user-info">
-                    <div class="feed-user-avatar"></div>
-                    <span class="feed-user-name">역사 덕후</span>
-                </div>
-                <div class="feed-meta">
-                    <span class="like-count">♡ 24</span>
-                    <span class="comment-count">💬 9</span>
-                </div>
-            </div>
-            <div class="feed-content">
-                <h3>경쟁전 마스터 찍는 법</h3>
-                <p>픽을 잘하면 됨 픽 못하는 벌레면 걍 접으셈 ㅉ</p>
-            </div>
-        </div>
-    `;
-
-    // My Post Empty State
-    const myPostEmptyHTML = `
-        <div class="my-post-empty">
-            <div class="empty-emoji">😢</div>
-            <div class="empty-title">아직 작성한 글이 없어요 ㅠ.ㅠ</div>
-            <div class="empty-subtitle">New Post 버튼을 눌러 새 글을 작성해보세요!</div>
-        </div>
-    `;
+    // Load from LocalStorage or use Default
+    let postsData = defaultPostsData;
+    const storedPosts = localStorage.getItem('communityPostsData');
+    if (storedPosts) {
+        try {
+            postsData = JSON.parse(storedPosts);
+            // Merge defaults if keys are missing (optional but good for stability)
+            if (!postsData['menu-popular']) postsData['menu-popular'] = defaultPostsData['menu-popular'];
+            if (!postsData['menu-tips']) postsData['menu-tips'] = defaultPostsData['menu-tips'];
+            if (!postsData['menu-data']) postsData['menu-data'] = defaultPostsData['menu-data'];
+            if (!postsData['menu-mypost']) postsData['menu-mypost'] = defaultPostsData['menu-mypost'];
+        } catch(e) {
+            console.error('Failed to parse posts data', e);
+            postsData = defaultPostsData;
+        }
+    } else {
+        // Init Storage
+        localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+    }
 
     const pageContent = {
-        'menu-popular': {
-            title: 'Popular Posts',
-            desc: '인기글을 구경해 보세요!',
-            feedType: 'default',
-            highlightFirst: true
-        },
-        'menu-tips': {
-            title: 'Tips & How-To',
-            desc: '다른 사람들의 노하우와 팁을 구경해보세요.',
-            feedType: 'tips',
-            highlightFirst: true
-        },
-        'menu-data': {
-            title: 'Data Sharing', // Should I revert title? User request didn't specify. Assuming "Latest Community" is default. Wait, user request for Popular was explicit.
-            desc: '다양한 질문과 정보를 나누며 커뮤니티를 즐겨보세요',
-            feedType: 'default',
-            highlightFirst: false
-        },
-        'menu-mypost': {
-            title: 'My Post',
-            desc: '내가 작성한 글을 한 눈에 볼 수 있어요',
-            feedType: 'empty',
-            highlightFirst: false
-        },
-        // Defaults
-        'default': {
-            title: 'Community',
-            desc: '함께 소통하는 공간입니다.',
-            feedType: 'default',
-            highlightFirst: false
-        }
+        'menu-popular': { title: 'Popular Posts', desc: '인기글을 구경해 보세요!' },
+        'menu-tips': { title: 'Tips & How-To', desc: '다른 사람들의 노하우와 팁을 구경해보세요.' },
+        'menu-data': { title: 'Data Sharing', desc: '다양한 질문과 정보를 나누며 커뮤니티를 즐겨보세요' },
+        'menu-mypost': { title: 'My Post', desc: '내가 작성한 글을 한 눈에 볼 수 있어요' }
     };
+
+    function renderFeed(menuId) {
+        if (!communityFeed) return;
+        communityFeed.innerHTML = '';
+        
+        const posts = postsData[menuId] || [];
+        
+        if (posts.length === 0) {
+             communityFeed.innerHTML = `
+                <div class="my-post-empty">
+                    <div class="empty-emoji">😢</div>
+                    <div class="empty-title">아직 작성한 글이 없어요 ㅠ.ㅠ</div>
+                    <div class="empty-subtitle">New Post 버튼을 눌러 새 글을 작성해보세요!</div>
+                </div>`;
+             return;
+        }
+        
+        posts.forEach((post, index) => {
+            const isHighlighted = (menuId === 'menu-popular' || menuId === 'menu-tips') && index === 0;
+            const borderStyle = isHighlighted ? 'style="border: 3px solid #90D1CA;"' : '';
+            
+            const isLiked = post.isLiked || false;
+            const heartIcon = isLiked ? '♥' : '♡';
+            const heartColor = isLiked ? 'color: #FF5252;' : '';
+            const activeClass = isLiked ? 'active' : '';
+            
+            const html = `
+                <div class="feed-card" ${borderStyle}>
+                    <div class="feed-header">
+                        <div class="feed-user-info">
+                            <div class="feed-user-avatar"></div>
+                            <span class="feed-user-name">${post.user}</span>
+                        </div>
+                        <div class="feed-meta">
+                            <span class="like-count ${activeClass}" data-menu-id="${menuId}" data-index="${index}" style="cursor: pointer; ${heartColor}">${heartIcon} ${post.like}</span>
+                            <span class="comment-count">💬 ${post.comment}</span>
+                        </div>
+                    </div>
+                    <div class="feed-content">
+                        <h3>${post.title}</h3>
+                        <p>${post.content}</p>
+                    </div>
+                </div>
+            `;
+            communityFeed.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    // ==========================================
+    // Post Detail View Logic (Replaced Modal)
+    // ==========================================
+    const postDetailView = document.getElementById('post-detail-view');
+    const feedView = document.getElementById('community-feed-view');
+    const closeDetail = postDetailView ? postDetailView.querySelector('.close-detail-text-btn') : null;
+    
+    // Elements to populate (Updated Selectors for new element variable name, though ID is used for context)
+    // Actually selectors are relative to postDetailView which is the new container
+    
+    // Elements to populate in View
+    const pdTitle = postDetailView ? postDetailView.querySelector('.pd-title') : null;
+    const pdUsername = postDetailView ? postDetailView.querySelector('.pd-username') : null;
+    const pdDateView = postDetailView ? postDetailView.querySelector('.pd-date-view') : null;
+    const pdContent = postDetailView ? postDetailView.querySelector('.pd-content') : null;
+    const pdLike = postDetailView ? postDetailView.querySelector('.pd-like') : null;
+    const pdComment = postDetailView ? postDetailView.querySelector('.pd-comment') : null;
+    const commentsList = postDetailView ? postDetailView.querySelector('.comments-list') : null;
+    
+    const commentInput = postDetailView ? postDetailView.querySelector('.comment-input') : null;
+    const commentSubmit = postDetailView ? postDetailView.querySelector('.comment-submit-btn') : null;
+    
+    // Buttons in Modal
+    const editBtn = postDetailView ? postDetailView.querySelector('.pd-btn.edit') : null;
+    const deleteBtn = postDetailView ? postDetailView.querySelector('.pd-btn.delete') : null;
+
+    let currentOpenPost = null;
+    let currentOpenMenuId = null;
+    let currentOpenIndex = null;
+    let isEditMode = false;
+
+    function renderComments(comments) {
+        if(!commentsList) return;
+        commentsList.innerHTML = '';
+        comments.forEach((c, idx) => {
+             const isLiked = c.isLiked || false;
+             const heartIcon = isLiked ? '♥' : '♡'; // Or use SVG if preferred, but char is fine for now
+             const activeClass = isLiked ? 'active' : '';
+
+             const html = `
+                <div class="comment-card" data-index="${idx}">
+                    <div class="comment-left">
+                        <div class="comment-avatar"></div>
+                        <div class="comment-info">
+                            <span class="comment-name">${c.user}</span>
+                            <span class="comment-date">${c.date}</span>
+                        </div>
+                    </div>
+                    <div class="comment-divider-vertical"></div>
+                    <div class="comment-content-text">${c.content}</div>
+                    <div class="comment-right">
+                        <div class="comment-like-box" data-action="like" data-index="${idx}">
+                            <span class="comment-like-icon ${activeClass}" style="${isLiked ? 'color: #8FD9D2;' : ''} /* Temporary override if needed */">
+                                ${heartIcon}
+                            </span>
+                            <span>${c.like || 0}</span>
+                        </div>
+                        <div class="comment-menu-box" style="position: relative;">
+                            <div class="comment-menu-btn" data-action="menu" data-index="${idx}">⋮</div>
+                            <div class="comment-dropdown" id="comm-dropdown-${idx}">
+                                <div class="comment-dropdown-item" data-action="edit" data-index="${idx}">수정</div>
+                                <div class="comment-dropdown-item" data-action="delete" data-index="${idx}">삭제</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             `;
+             commentsList.insertAdjacentHTML('beforeend', html);
+        });
+    }
+
+    // ==========================================
+    // Custom Prompt Modal Logic
+    // ==========================================
+    const promptModal = document.getElementById('custom-prompt-modal');
+    const promptTitle = document.getElementById('custom-prompt-title');
+    const promptInput = document.getElementById('custom-prompt-input');
+    const promptOkBtn = document.getElementById('custom-prompt-ok');
+    const promptCancelBtn = document.getElementById('custom-prompt-cancel');
+    let promptCallback = null;
+
+    function showCustomPrompt(title, defaultValue, callback) {
+        if (!promptModal) {
+            const result = prompt(title, defaultValue);
+            if(result !== null) callback(result);
+            return;
+        }
+        promptTitle.textContent = title;
+        promptInput.value = defaultValue || '';
+        promptCallback = callback;
+        promptModal.classList.remove('hidden');
+        setTimeout(() => promptInput.focus(), 50); // Small delay for focus
+    }
+
+    if(promptOkBtn) {
+        promptOkBtn.addEventListener('click', () => {
+             if(promptCallback) promptCallback(promptInput.value);
+             promptModal.classList.add('hidden');
+             promptCallback = null;
+        });
+    }
+
+    if(promptCancelBtn) {
+        promptCancelBtn.addEventListener('click', () => {
+             promptModal.classList.add('hidden');
+             promptCallback = null;
+        });
+    }
+
+    // ==========================================
+    // Custom Confirm Modal Logic
+    // ==========================================
+    const confirmModal = document.getElementById('custom-confirm-modal');
+    const confirmMsg = document.getElementById('custom-confirm-msg');
+    const confirmOkBtn = document.getElementById('custom-confirm-ok');
+    const confirmCancelBtn = document.getElementById('custom-confirm-cancel');
+    let confirmCallback = null;
+
+    function showCustomConfirm(message, callback) {
+        if (!confirmModal) {
+            if(confirm(message)) callback(); // Fallback
+            return;
+        }
+        confirmMsg.textContent = message;
+        confirmCallback = callback;
+        confirmModal.classList.remove('hidden');
+    }
+
+    if(confirmOkBtn) {
+        confirmOkBtn.addEventListener('click', () => {
+             if(confirmCallback) confirmCallback();
+             confirmModal.classList.add('hidden');
+             confirmCallback = null;
+        });
+    }
+
+    if(confirmCancelBtn) {
+        confirmCancelBtn.addEventListener('click', () => {
+             confirmModal.classList.add('hidden');
+             confirmCallback = null;
+        });
+    }
+
+    // Comment Event Delegation
+    if (commentsList) {
+        commentsList.addEventListener('click', (e) => {
+            const target = e.target;
+            
+            // Handle Menu Toggle
+            if (target.dataset.action === 'menu') {
+                e.stopPropagation(); // Prevent closing immediately
+                const idx = target.dataset.index;
+                // Close all others
+                document.querySelectorAll('.comment-dropdown').forEach(d => d.classList.remove('show'));
+                // Toggle current
+                const dropdown = document.getElementById(`comm-dropdown-${idx}`);
+                if (dropdown) dropdown.classList.toggle('show');
+            }
+            
+            // Handle Edit
+            else if (target.dataset.action === 'edit') {
+                const idx = parseInt(target.dataset.index);
+                const comments = currentOpenPost.comments;
+                if (comments && comments[idx]) {
+                    // Check ownership (Simple check for demo)
+                    if (comments[idx].user !== '나 (Guest)') {
+                        alert('본인의 댓글만 수정할 수 있습니다.');
+                        return;
+                    }
+
+                    showCustomPrompt('댓글을 수정하세요', comments[idx].content, (newContent) => {
+                         if (newContent !== null && newContent.trim() !== "") {
+                            comments[idx].content = newContent;
+                            // Save
+                            localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+                            renderComments(comments);
+                        }
+                    });
+                }
+            }
+             
+            // Handle Delete
+            else if (target.dataset.action === 'delete') {
+                const idx = parseInt(target.dataset.index);
+                const comments = currentOpenPost.comments;
+                if (comments && comments[idx]) {
+                     // Check ownership (Simple check for demo)
+                    if (comments[idx].user !== '나 (Guest)') {
+                        alert('본인의 댓글만 삭제할 수 있습니다.');
+                        return;
+                    }
+                    
+                    showCustomConfirm('댓글을 삭제하시겠습니까?', () => {
+                        comments.splice(idx, 1);
+                        currentOpenPost.comment = Math.max(0, (currentOpenPost.comment || 0) - 1);
+                        
+                        // Save
+                        localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+                        
+                        // Update UI
+                        renderComments(comments);
+                        if(pdComment) pdComment.textContent = `💬 ${currentOpenPost.comment}`;
+                    });
+                }
+            }
+            
+            // Handle Like (Comment)
+            else if (target.closest('.comment-like-box')) {
+                 const box = target.closest('.comment-like-box');
+                 const idx = parseInt(box.dataset.index);
+                 const comments = currentOpenPost.comments;
+                 if (comments && comments[idx]) {
+                     const c = comments[idx];
+                     if(c.isLiked) {
+                         c.isLiked = false;
+                         c.like = Math.max(0, (c.like || 0) - 1);
+                     } else {
+                         c.isLiked = true;
+                         c.like = (c.like || 0) + 1;
+                     }
+                     // Save
+                     localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+                     renderComments(comments);
+                 }
+            }
+        });
+        
+        // Close dropdowns when clicking elsewhere
+        document.addEventListener('click', (e) => {
+             if (!e.target.closest('.comment-menu-box')) {
+                 document.querySelectorAll('.comment-dropdown').forEach(d => d.classList.remove('show'));
+             }
+        });
+    }
+
+    function openPostDetail(post, menuId, index) {
+        if(!postDetailView || !feedView) return;
+        currentOpenPost = post;
+        currentOpenMenuId = menuId;
+        currentOpenIndex = index;
+        
+        pdTitle.textContent = post.title;
+        pdUsername.textContent = post.user;
+        pdDateView.textContent = `${post.date || ''} | 조회수 ${post.views || 0}`;
+        pdContent.textContent = post.content;
+        
+        // Update stats
+        const isLiked = post.isLiked;
+        pdLike.innerHTML = `${isLiked ? '♥' : '♡'} ${post.like}`;
+        pdLike.style.color = isLiked ? '#FF5252' : '';
+        pdComment.textContent = `💬 ${post.comment}`;
+        
+        // Buttons visibility (Only for current user "나 (Guest)" for demo)
+        if (post.user === '나 (Guest)') {
+            if(editBtn) editBtn.classList.remove('hidden');
+            if(deleteBtn) deleteBtn.classList.remove('hidden');
+        } else {
+            if(editBtn) editBtn.classList.add('hidden');
+            if(deleteBtn) deleteBtn.classList.add('hidden');
+        }
+        
+        renderComments(post.comments || []);
+        
+        feedView.classList.add('hidden');
+        postDetailView.classList.remove('hidden');
+        window.scrollTo(0, 0);
+    }
+
+    const closeDetailFunc = () => {
+        if(!postDetailView || !feedView) return;
+        
+        postDetailView.classList.add('hidden');
+        feedView.classList.remove('hidden');
+        
+        // Refresh feed to show updated view count/comments
+        if (currentOpenMenuId) renderFeed(currentOpenMenuId);
+    };
+    
+    if(closeDetail) closeDetail.addEventListener('click', closeDetailFunc);
+
+    if (commentSubmit) {
+        commentSubmit.addEventListener('click', () => {
+             const text = commentInput.value;
+             if (!text.trim()) return;
+             
+             const now = new Date();
+             const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}. ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+             
+             const newComment = {
+                 user: '나 (Guest)',
+                 content: text,
+                 date: dateStr,
+                 like: 0
+             };
+             
+             if (!currentOpenPost.comments) currentOpenPost.comments = [];
+             currentOpenPost.comments.push(newComment);
+             currentOpenPost.comment = (currentOpenPost.comment || 0) + 1;
+             
+             // Save
+             localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+             
+             // Update View
+             renderComments(currentOpenPost.comments);
+             pdComment.textContent = `💬 ${currentOpenPost.comment}`;
+             commentInput.value = '';
+        });
+    }
+
+    // Post Actions
+    if(deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+             showCustomConfirm('정말 삭제하시겠습니까?', () => {
+                 if(currentOpenMenuId !== null && currentOpenIndex !== null) {
+                     postsData[currentOpenMenuId].splice(currentOpenIndex, 1);
+                     localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+                     closeDetailFunc();
+                 }
+             });
+        });
+    }
+
+    if(editBtn) {
+        editBtn.addEventListener('click', () => {
+             if (!newPostModal) return;
+             isEditMode = true;
+
+             // UI Update for Edit Mode
+             const modalTitle = newPostModal.querySelector('.notice-board-title');
+             if(modalTitle) modalTitle.textContent = 'Edit Post';
+             
+             const submitBtn = newPostModal.querySelector('.notice-submit-btn');
+             if(submitBtn) submitBtn.textContent = '수정 완료';
+
+             const titleInput = newPostModal.querySelector('.notice-input');
+             const contentInput = newPostModal.querySelector('.notice-textarea');
+             
+             if(titleInput) titleInput.value = currentOpenPost.title;
+             if(contentInput) contentInput.value = currentOpenPost.content;
+
+             newPostModal.classList.remove('hidden');
+        });
+    }
+
+    // Like Click Event Delegation AND Card Click (Open Detail)
+    if (communityFeed) {
+        communityFeed.addEventListener('click', (e) => {
+            // 1. Check for Like Button Click first
+            const likeTarget = e.target.closest('.like-count');
+            if (likeTarget) {
+                const menuId = likeTarget.getAttribute('data-menu-id');
+                const index = parseInt(likeTarget.getAttribute('data-index'));
+                
+                if (postsData[menuId] && postsData[menuId][index]) {
+                    const post = postsData[menuId][index];
+                    
+                    // Toggle Like
+                    if (post.isLiked) {
+                        post.isLiked = false;
+                        post.like = Math.max(0, post.like - 1);
+                    } else {
+                        post.isLiked = true;
+                        post.like = (post.like || 0) + 1;
+                    }
+                    
+                    // Save
+                    localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+                    
+                    // Update UI
+                    const isLiked = post.isLiked;
+                    const heartIcon = isLiked ? '♥' : '♡';
+                    
+                    likeTarget.innerHTML = `${heartIcon} ${post.like}`;
+                    likeTarget.style.color = isLiked ? '#FF5252' : '';
+                    if (isLiked) likeTarget.classList.add('active');
+                    else likeTarget.classList.remove('active');
+                }
+                return; // Stop here if like was clicked
+            }
+
+            // 2. Check for Card Click (Open Detail)
+            const cardTarget = e.target.closest('.feed-card');
+            if (cardTarget) {
+                const menuId = document.querySelector('.community-sidebar .menu-item.active').id;
+                // Find index based on DOM order
+                const cards = Array.from(communityFeed.querySelectorAll('.feed-card'));
+                const index = cards.indexOf(cardTarget);
+
+                if (postsData[menuId] && postsData[menuId][index]) {
+                    const post = postsData[menuId][index];
+                    
+                    // Increase views logic (simple increment)
+                    post.views = (post.views || 0) + 1;
+                    localStorage.setItem('communityPostsData', JSON.stringify(postsData));
+                    
+                    openPostDetail(post, menuId, index);
+                }
+            }
+        });
+    }
 
     menuItems.forEach(item => {
         item.addEventListener('click', () => {
+            // If Post Detail View is open, close it and go back to feed list
+            if (postDetailView && !postDetailView.classList.contains('hidden')) {
+                postDetailView.classList.add('hidden');
+                if (feedView) feedView.classList.remove('hidden');
+            }
+
             menuItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
             
             const id = item.id;
-            const content = pageContent[id] || pageContent['default'];
+            
+            // Toggle New Post button visibility
+            if (newPostBtn) {
+                const boardSidebar = newPostBtn.parentElement;
+                if (boardSidebar) {
+                    if (id === 'menu-mypost') {
+                        boardSidebar.style.display = 'none';
+                    } else {
+                        boardSidebar.style.display = '';
+                    }
+                }
+            }
+
+            const content = pageContent[id] || pageContent['menu-data'];
             
             if(commTitle) commTitle.textContent = content.title;
             if(commDesc) commDesc.textContent = content.desc;
-
-            // Content Switching
-            if (content.feedType === 'tips') {
-                communityFeed.innerHTML = tipsFeedHTML;
-            } else if (content.feedType === 'empty') {
-                communityFeed.innerHTML = myPostEmptyHTML;
-            } else {
-                communityFeed.innerHTML = defaultFeedHTML;
-            }
-
-            // Apply highlight if needed
-            if (content.highlightFirst) {
-                const firstCard = communityFeed.querySelector('.feed-card:first-child');
-                if (firstCard) {
-                    firstCard.style.border = '3px solid #90D1CA';
-                }
-            }
+            
+            renderFeed(id);
         });
     });
+    
+    // Initial Render
+    const initialActive = document.querySelector('.community-sidebar .menu-item.active');
+    if (initialActive) {
+        // Apply initial visibility
+        if (newPostBtn) {
+            const boardSidebar = newPostBtn.parentElement;
+            if (boardSidebar) {
+                if (initialActive.id === 'menu-mypost') {
+                    boardSidebar.style.display = 'none';
+                } else {
+                    boardSidebar.style.display = '';
+                }
+            }
+        }
+        renderFeed(initialActive.id); 
+    }
+
 });

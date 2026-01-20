@@ -249,7 +249,7 @@ body {
     gap: 15px;
 }
 
-.rank-card {
+.quick-rank-card {
     background-color: #fff;
     border-radius: 12px;
     padding: 0 25px;
@@ -2465,7 +2465,7 @@ body {
 /* 메인 컨텐츠 영역 */
 .community-main {
     flex: 1;
-    padding: 60px 80px;
+    padding: 30px; /* Reduced from 60px 80px to use more space */
     background-color: #fff;
     border-right: 1px solid #eee;
 }
@@ -2502,6 +2502,24 @@ body {
     flex-direction: column;
     gap: 20px;
     flex: 1;
+    max-height: 600px; /* 대략 3개 높이 */
+    overflow-y: auto;
+    padding-right: 10px; /* 스크롤바 공간 */
+}
+
+/* Custom Scrollbar for Community Feed */
+.community-feed::-webkit-scrollbar {
+    width: 6px;
+}
+.community-feed::-webkit-scrollbar-track {
+    background: transparent;
+}
+.community-feed::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+.community-feed::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
 }
 
 .community-board-sidebar {
@@ -2558,12 +2576,11 @@ body {
 .feed-user-avatar {
     width: 36px;
     height: 36px;
-    background-color: #e0e0e0;
     border-radius: 50%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23999'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+    background-image: url('img/Profile.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 24px;
+    background-size: cover;
 }
 
 .feed-user-name {
@@ -2836,4 +2853,566 @@ body {
 .empty-subtitle {
     font-size: 16px;
     color: #666;
+}
+
+/* ==========================================
+   게시글 상세 뷰 스타일 (In-Flow)
+   ========================================== */
+#post-detail-view {
+    width: 100%;
+    background-color: #fff;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+#post-detail-view.hidden {
+    display: none;
+}
+
+.pd-header {
+    margin-bottom: 20px;
+}
+
+.pd-header-top {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.pd-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+}
+
+.close-detail-text-btn {
+    background: none; 
+    border: none; 
+    color: #999; 
+    font-size: 28px; 
+    cursor: pointer;
+    line-height: 1;
+}
+
+.pd-divider {
+    height: 1px;
+    background: #eee;
+    margin: 20px 0;
+}
+
+.pd-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Reuse existing pd-user-info, pd-avatar, pd-user-text from previous CSS */
+
+.pd-comments-section {
+    margin-top: 40px;
+}
+
+
+/* Post Detail Board Container */
+.post-detail-board {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 60px; /* Increased internal padding */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin: 0;
+    width: 100%;
+    min-height: 800px; /* Added min-height to make it look bigger */
+    display: flex;
+    flex-direction: column;
+}
+
+.pd-title {
+    font-size: 75px; /* Adjusted from 42px */
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #000;
+    line-height: 1.2;
+}
+
+.pd-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 25px; /* Increased spacing */
+}
+
+.pd-user-info {
+    display: flex;
+    align-items: center;
+    gap: 18px; /* Increased gap */
+}
+
+.pd-avatar {
+    width: 60px; /* Increased from 48px */
+    height: 60px; /* Increased from 48px */
+    border-radius: 50%;
+    background-image: url('img/Profile.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.pd-user-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* Increased gap */
+}
+
+.pd-username {
+    font-size: 18px; /* Increased from 16px */
+    font-weight: 700;
+    color: #333;
+}
+
+.pd-date-view {
+    font-size: 14px; /* Increased from 12px */
+    color: #999;
+}
+
+.pd-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.pd-btn {
+    padding: 8px 20px; /* Increased padding */
+    border-radius: 24px; /* More rounded */
+    border: 1px solid #999; /* Darker border */
+    background: white;
+    font-size: 15px; /* Increased font */
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.pd-btn:hover {
+    background: #f5f5f5;
+    border-color: #777;
+    color: #333;
+}
+
+.pd-stats {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Increased gap */
+    font-size: 18px; /* High increased font */
+    color: #333; /* Darker */
+    font-weight: 700;
+}
+
+.pd-stats span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pd-body {
+    padding: 50px 0; /* Increased padding */
+    margin-bottom: 20px;
+}
+
+.pd-content {
+    font-size: 28px; /* Adjusted from 20px */
+    line-height: 1.8;
+    color: #222;
+    white-space: pre-line;
+}
+
+
+/* Comment Section */
+.comment-input-area {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.comment-input {
+    width: 100%;
+    padding: 15px 80px 15px 15px; /* Right padding for button */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.comment-input:focus {
+    border-color: #176B5F;
+}
+
+.comment-submit-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #176B5F;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-height: 290px; /* Approx 3 items */
+    overflow-y: auto;
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+.comments-list::-webkit-scrollbar {
+    width: 6px;
+}
+.comments-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+.comments-list::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 3px;
+}
+.comments-list::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+.comment-item {
+    display: flex;
+    gap: 15px;
+    padding: 20px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+}
+
+.comm-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #eee;
+    background-image: url('img/Profile.png');
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.comm-content-wrapper {
+    flex: 1;
+}
+
+.comm-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.comm-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.comm-date {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.comm-text {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.comm-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comm-left-actions {
+    /* empty for now or reply button */
+}
+
+.comm-right-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.comm-like {
+    font-size: 13px;
+    color: #777;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.comm-more {
+    font-weight: 700;
+    color: #aaa;
+    cursor: pointer;
+    transform: rotate(90deg);
+    font-size: 18px;
+    line-height: 0;
+}
+
+.pd-like.active {
+    color: #FF5252;
+}
+
+.comm-like.active {
+    color: #FF5252;
+}
+
+/* Comment Card Redesign */
+.comment-card {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px 20px;
+    margin-bottom: 12px;
+    background-color: #fff;
+    position: relative;
+    min-height: 80px;
+}
+
+.comment-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 180px; /* Fixed width for alignment */
+    flex-shrink: 0;
+}
+
+.comment-avatar {
+    width: 48px;
+    height: 48px;
+    background-color: #eee;
+    border-radius: 50%;
+    background-image: url('img/Profile.png');
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #eee;
+}
+
+.comment-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+}
+
+.comment-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+}
+
+.comment-date {
+    font-size: 11px;
+    color: #999;
+}
+
+.comment-divider-vertical {
+    width: 1px;
+    height: 40px;
+    background-color: #eee;
+    margin: 0 20px;
+    flex-shrink: 0;
+}
+
+.comment-content-text {
+    flex-grow: 1;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.comment-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 20px;
+}
+
+.comment-like-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    cursor: pointer;
+}
+
+.comment-like-icon {
+    font-size: 20px;
+    color: #8FD9D2; /* Color from screenshot */
+}
+.comment-like-icon.active {
+    color: #FF5252;
+}
+
+.comment-menu-btn {
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+    font-weight: 900;
+    transform: rotate(90deg);
+    line-height: 1;
+    padding: 5px;
+}
+
+.comment-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    background: white;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    z-index: 10;
+    overflow: hidden;
+    width: 80px;
+    text-align: center;
+    display: none;
+}
+
+.comment-dropdown.show {
+    display: block;
+}
+
+.comment-dropdown-item {
+    padding: 10px 0;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
+}
+.comment-dropdown-item:hover {
+    background-color: #f9f9f9;
+}
+.comment-dropdown-item:first-child {
+    border-bottom: 1px solid #f5f5f5;
+}
+
+
+/* Custom Confirm Modal */
+.custom-confirm-popup {
+    background: white;
+    width: 320px;
+    padding: 30px 24px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 20001;
+    animation: fadeInScale 0.2s ease-out;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.confirm-msg {
+    font-size: 18px;
+    margin: 10px 0 30px;
+    color: #222;
+    font-weight: 700;
+    line-height: 1.4;
+    word-break: keep-all;
+}
+
+.confirm-btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.confirm-btn-cancel {
+    background: #f5f5f5;
+    color: #666;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+.confirm-btn-cancel:hover {
+    background: #e9e9e9;
+}
+
+.confirm-btn-ok {
+    background: #176B5F;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(23, 107, 95, 0.2);
+}
+
+.confirm-btn-ok:hover {
+    background: #12574d;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(23, 107, 95, 0.3);
+}
+
+
+/* Custom Prompt Modal */
+.custom-prompt-popup {
+    background: white;
+    width: 380px;
+    padding: 30px 24px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 20011;
+    animation: fadeInScale 0.2s ease-out;
+}
+
+.prompt-title {
+    font-size: 18px;
+    margin: 0 0 20px;
+    color: #222;
+    font-weight: 700;
+}
+
+.prompt-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+    transition: border 0.2s;
+}
+
+.prompt-input:focus {
+    border-color: #176B5F;
+    outline: none;
 }
